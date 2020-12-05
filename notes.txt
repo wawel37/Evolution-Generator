@@ -1,0 +1,2 @@
+1. Mapa definiowana jest przez height i width
+2. Widoczne pola mapy indeksujemy od 0 do width-1 włącznie (height identycznie)
