@@ -14,9 +14,9 @@ import java.util.Random;
 public class Animal extends AbstractMapElement{
     private Random randomGenerator = new Random();
 
-    public final int startEnergy;
-    public final int moveEnergy;
-    private int currentEnergy;
+    public final double startEnergy;
+    public final double moveEnergy;
+    private double currentEnergy;
     private IPositionChangeObserver observer;
     private IWorldMap map;
     private Orientation orientation;
@@ -27,12 +27,13 @@ public class Animal extends AbstractMapElement{
         this.position = position;
         this.startEnergy = 10;
         this.moveEnergy = 10;
-        this.setGens();
+        this.setRandomGens();
     }
 
     public Animal (Vector2d position,
-                   int startEnergy,
-                   int moveEnergy,
+                   double startEnergy,
+                   double currentEnergy,
+                   double moveEnergy,
                    IPositionChangeObserver observer,
                    IWorldMap map,
                    Orientation orientation){
@@ -42,11 +43,11 @@ public class Animal extends AbstractMapElement{
         this.observer = observer;
         this.map = map;
         this.orientation = orientation;
-        this.currentEnergy = this.startEnergy;
-        this.setGens();
+        this.currentEnergy = currentEnergy;
+        this.setRandomGens();
     }
 
-    public int getCurrentEnergy(){
+    public double getCurrentEnergy(){
         return this.currentEnergy;
     }
 
@@ -55,6 +56,7 @@ public class Animal extends AbstractMapElement{
             this.die();
             return;
         }
+        this.currentEnergy -= this.moveEnergy;
         Vector2d oldPosition = this.position;
         Animal oldAnimal = this;
         this.rotate();
@@ -62,11 +64,15 @@ public class Animal extends AbstractMapElement{
         this.observer.positionChanged(oldAnimal, oldPosition, this.position);
     }
 
+    public void gainEnergy(double energy){
+        this.currentEnergy += energy;
+    }
 
-
-
-
-
+    public double copulating(){
+        double result = this.currentEnergy/4;
+        this.currentEnergy -= result;
+        return result;
+    }
 
     private void rotate(){
         int myRotation = this.gens.get(this.randomGenerator.nextInt(32));
@@ -74,10 +80,10 @@ public class Animal extends AbstractMapElement{
     }
 
     private void die(){
-        //PASS
+        this.observer.deleteAnimal(this, this.position);
     }
 
-    private void setGens(){
+    private void setRandomGens(){
         for(int i = 0; i < 32; i++){
             this.gens.add(this.randomGenerator.nextInt(8));
         }

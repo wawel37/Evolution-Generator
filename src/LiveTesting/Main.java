@@ -10,7 +10,50 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args){
-        test3();
+        test5();
+    }
+
+    public static void test5(){
+        Vector2d myPosition1 = new Vector2d(0,0);
+        Grass grass1 = new Grass(myPosition1, 11);
+        GameMap map = new GameMap(10, 10, 0.8);
+        Animal animal1 = new Animal(myPosition1, 20, 20, 1, map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition1, 30,30,  1, map, map, Orientation.NORTH);
+        Animal animal3 = new Animal(myPosition1, 30, 40, 1, map, map, Orientation.NORTH);
+        Animal animal4 = new Animal(myPosition1, 20,20,  1, map, map, Orientation.NORTH);
+        System.out.println(map.placeGrass(grass1));
+        map.addAnimal(animal1);
+        map.addAnimal(animal2);
+        printAllAnimals(map);
+        printAllGrasses(map);
+        map.eatAllGrasses();
+        printAllAnimals(map);
+        printAllGrasses(map);
+        map.copulateAllAnimals();
+        printAllAnimals(map);
+        map.copulateAllAnimals();
+        printAllAnimals(map);
+        map.moveAllAnimals();
+        printAllAnimals(map);
+    }
+
+    public static void test4(){
+        Vector2d myPosition1 = new Vector2d(2,2);
+        Grass grass1 = new Grass(myPosition1, 11);
+        GameMap map = new GameMap(10, 10, 0.8);
+        Animal animal1 = new Animal(myPosition1, 20, 20, 1, map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition1, 20,20,  1, map, map, Orientation.NORTH);
+        System.out.println(map.placeGrass(grass1));
+        map.addAnimal(animal1);
+        map.addAnimal(animal2);
+        printAllAnimals(map);
+        printAllGrasses(map);
+        map.eatAllGrasses();
+        printAllAnimals(map);
+        printAllGrasses(map);
+        map.eatAllGrasses();
+        printAllAnimals(map);
+        printAllGrasses(map);
     }
 
     public static void test3(){
@@ -22,30 +65,35 @@ public class Main {
         Grass grass3 = new Grass(myPosition3, 10);
         Grass grass4 = new Grass(myPosition3, 10);
         GameMap map = new GameMap(10, 10, 0.8);
-        Animal animal1 = new Animal(myPosition1, 10, 10, map, map, Orientation.NORTH);
-        Animal animal2 = new Animal(myPosition2, 10, 10, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 10, 10, 0.5, map, map, Orientation.NORTH);
+//        Animal animal2 = new Animal(myPosition2, 10, 0.5, map, map, Orientation.NORTH);
         map.placeAnimal(animal1);
-        map.placeAnimal(animal2);
+//        map.placeAnimal(animal2);
         System.out.println(map.placeGrass(grass1));
         System.out.println(map.placeGrass(grass2));
         System.out.println(map.placeGrass(grass3));
         System.out.println(map.placeGrass(grass4));
+        for(int i = 0; i < 10; i++){
+            printAllAnimals(map);
+            map.moveAllAnimals();
+            System.out.println(i);
+        }
     }
 
     public static void test2(){
         Vector2d myPosition1 = new Vector2d(2,2);
         Vector2d myPosition2 = new Vector2d(3,3);
         GameMap map = new GameMap(10, 10, 0.8);
-        Animal animal1 = new Animal(myPosition1, 10, 10, map, map, Orientation.NORTH);
-        Animal animal2 = new Animal(myPosition2, 10, 10, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 10, 10, 10, map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition2, 10, 10, 10, map, map, Orientation.NORTH);
     }
 
     public static void test1(){
         Vector2d myPosition1 = new Vector2d(2,2);
         Vector2d myPosition2 = new Vector2d(3,3);
         GameMap map = new GameMap(10, 10, 0.5);
-        Animal animal1 = new Animal(myPosition1, 10, 10, map, map, Orientation.NORTH);
-        Animal animal2 = new Animal(myPosition2, 10, 10, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 10, 10, 10, map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition2, 10, 10, 10, map, map, Orientation.NORTH);
         map.placeAnimal(animal1);
         map.placeAnimal(animal2);
         System.out.println("Jałowa pozycja animala1: " + animal1.getPosition());
@@ -64,12 +112,21 @@ public class Main {
     }
 
     public static void printAllAnimals(GameMap map){
-        for (Map.Entry<Vector2d, Set<Animal>> entry : map.getAnimals().entrySet()){
+        for (Map.Entry<Vector2d, TreeSet<Animal>> entry : map.getAnimals().entrySet()){
             Iterator<Animal> iterator = entry.getValue().iterator();
             System.out.println("Pozycje animalow na pozycji " + entry.getKey() + ":");
             while(iterator.hasNext()){
-                System.out.println(iterator.next().getPosition());
+                Animal myAnimal = iterator.next();
+                System.out.println(myAnimal.getPosition());
+                System.out.println("Energy: " + myAnimal.getCurrentEnergy());
             }
+        }
+    }
+
+    public static void printAllGrasses(GameMap map){
+        for (Map.Entry<Vector2d, Grass> entry : map.getGrasses().entrySet()){
+            System.out.println("Pozycje grassow na pozycji" + entry.getKey() + ":");
+            System.out.println(entry.getValue().getPosition());
         }
     }
 }

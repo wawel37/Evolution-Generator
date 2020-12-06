@@ -2,11 +2,15 @@ package MapElement;
 import Math.Vector2d;
 
 public class Grass extends AbstractMapElement {
-    public int plantEnergy;
+    public double plantEnergy;
 
-    public Grass (Vector2d position, int plantEnergy){
+    public Grass (Vector2d position, double plantEnergy){
         this.plantEnergy = plantEnergy;
         this.position = position;
+    }
+
+    public double getPlantEnergy(){
+        return this.plantEnergy;
     }
 
     @Override

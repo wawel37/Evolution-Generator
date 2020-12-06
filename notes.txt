@@ -1,2 +1,7 @@
 1. Mapa definiowana jest przez height i width
 2. Widoczne pola mapy indeksujemy od 0 do width-1 włącznie (height identycznie)
+
+//todo
+- Zrobic geny przy rozmnazaniu
+- sprawdzanie czy wszystkie pola w okół są zajete, i jezeli sa to wtedy w losowym miejscu dodawac nowe zwierze
+- zrobic osobna klase do genotypow
