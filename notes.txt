@@ -2,4 +2,5 @@
 2. Widoczne pola mapy indeksujemy od 0 do width-1 włącznie (height identycznie)
 
 //todo
-- sprawdzanie czy wszystkie pola w okół są zajete, i jezeli sa to wtedy w losowym miejscu dodawac nowe zwierze
+- stworzenie symulacji
+- randomowe pozycje dla zwierzecia, konstruktor

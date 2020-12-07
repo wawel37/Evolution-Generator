@@ -19,13 +19,21 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
     //these variables will be injected from Graphical InterFace or simulation engine
     protected double plantEnergy = 10;
-    protected double startEnergy = 10;
+    protected double startEnergy = 30;
     protected double moveEnergy = 0.5;
 
-    public AbstractWorldMap(int width, int height, double jungleRatio){
+    public AbstractWorldMap(int width,
+                            int height,
+                            double jungleRatio,
+                            double plantEnergy,
+                            double startEnergy,
+                            double moveEnergy){
         this.width = width;
         this.height = height;
         this.jungleRatio = jungleRatio;
+        this.plantEnergy = plantEnergy;
+        this.startEnergy = startEnergy;
+        this.moveEnergy = moveEnergy;
         this.calculateJungle();
     }
 
@@ -146,6 +154,11 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
             strongestAnimal2 = strongestAnimals.get(index2);
         }
 
+        //If the strongest animals dont have enough energy to copulate
+        if (strongestAnimal1.getCurrentEnergy() < this.startEnergy/2 || strongestAnimal2.getCurrentEnergy() < this.startEnergy/2){
+            return null;
+        }
+
         double energyForNewAnimal = 0;
         energyForNewAnimal += strongestAnimal1.copulating();
         energyForNewAnimal += strongestAnimal2.copulating();
@@ -153,7 +166,14 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         Vector2d positionForNewAnimal =  this.getPositionForNewAnimal(position);
         Orientation orientationForNewAnimal = Orientation.values()[this.randomGenerator.nextInt(8)];
 
-        Animal newAnimal = new Animal (positionForNewAnimal, this.startEnergy, energyForNewAnimal, this.moveEnergy, new Genotype(strongestAnimal1, strongestAnimal2), this, this, orientationForNewAnimal);
+        Animal newAnimal = new Animal (positionForNewAnimal,
+                                       this.startEnergy,
+                                       energyForNewAnimal,
+                                       this.moveEnergy,
+                                       new Genotype(strongestAnimal1, strongestAnimal2),
+                               this,
+                                  this,
+                                       orientationForNewAnimal);
 
         return newAnimal;
     }
@@ -222,14 +242,16 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
                 toMove.add(iterator.next());
             }
         }
-
+//
         /*
             Then we move each one of them, if it doesn't have enough energy to move,
              it simply dies, that's how life goes ¯\_(ツ)_/¯
         */
-        Iterator<Animal> iterator = toMove.iterator();
-        while(iterator.hasNext()){
-            iterator.next().move();
+        for(Animal animal : toMove){
+            if(!this.animals.get(animal.getPosition()).contains(animal)){
+                System.out.println("tutaj");
+            }
+            animal.move();
         }
     }
 
@@ -272,6 +294,28 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         if (steppe.size() != 0){
             Grass grassToPlace = new Grass(steppe.get(this.randomGenerator.nextInt(steppe.size())), this.plantEnergy);
             this.placeGrass(grassToPlace);
+        }
+    }
+
+    //We are generating random animals on the map
+    public void generateRandomAnimals(int count){
+        for(int i = 0; i < count; i++){
+            int x, y;
+            Vector2d position;
+            do{
+                x = randomGenerator.nextInt(this.width);
+                y = randomGenerator.nextInt(this.height);
+                position = new Vector2d(x,y);
+            }while(isOccupiedByAnimal(position));
+            Orientation newOrientation = Orientation.values()[this.randomGenerator.nextInt(8)];
+            this.placeAnimal(new Animal(position,
+                                        this.startEnergy,
+                                        this.startEnergy,
+                                        this.moveEnergy,
+                                        new Genotype(),
+                                        this,
+                                        this,
+                                        newOrientation));
         }
     }
 
@@ -334,5 +378,25 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         this.rightUpperJungleVector = new Vector2d(rightUpperx, rightUppery);
     }
 
+    @Override
+    public String toString(){
+        String result = "";
+        for (Map.Entry<Vector2d, TreeSet<Animal>> entry : this.animals.entrySet()){
+            Iterator<Animal> iterator = entry.getValue().iterator();
+            result += ("Pozycje animalow na pozycji " + entry.getKey() + ":" + "\n");
+            while(iterator.hasNext()){
+                Animal myAnimal = iterator.next();
+                result += (myAnimal.getPosition() + " " + myAnimal.id + "\n");
+                result +=("Energy: " + myAnimal.getCurrentEnergy() + "\n");
+            }
+        }
+
+        for (Map.Entry<Vector2d, Grass> entry : this.grasses.entrySet()){
+            result += ("Pozycje grassow na pozycji" + entry.getKey() + ":" + "\n");
+            result += (entry.getValue().getPosition() + "\n");
+        }
+
+        return result;
+    }
 
 }

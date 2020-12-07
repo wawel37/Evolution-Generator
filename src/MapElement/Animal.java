@@ -5,15 +5,13 @@ import Enums.*;
 import Math.*;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 public class Animal extends AbstractMapElement{
     private Random randomGenerator = new Random();
 
+    private static int counter = 0;
     public final double startEnergy;
     public final double moveEnergy;
     public final Genotype genotype;
@@ -21,15 +19,8 @@ public class Animal extends AbstractMapElement{
     private IPositionChangeObserver observer;
     private IWorldMap map;
     private Orientation orientation;
+    public final int id;
 
-
-    //Constructor for tests
-    public Animal (Vector2d position){
-        this.position = position;
-        this.startEnergy = 10;
-        this.moveEnergy = 10;
-        this.genotype = new Genotype();
-    }
 
     public Animal (Vector2d position,
                    double startEnergy,
@@ -47,6 +38,8 @@ public class Animal extends AbstractMapElement{
         this.orientation = orientation;
         this.currentEnergy = currentEnergy;
         this.genotype = genes;
+        this.id = counter;
+        counter++;
     }
 
     public double getCurrentEnergy(){
@@ -82,20 +75,24 @@ public class Animal extends AbstractMapElement{
     }
 
     private void die(){
-        this.observer.deleteAnimal(this, this.position);
+        this.observer.deleteAnimal(this, this.getPosition());
     }
 
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.currentEnergy, this.id, this.orientation, this.position, this.genotype, this.randomGenerator);
+    }
 
     @Override
     public boolean equals(Object other){
         if (this == other) return true;
         if (this.hashCode() != other.hashCode()) return false;
         Animal otherAnimal = (Animal) other;
-        return this.getPosition().equals(((Animal) other).getPosition());
+        return this.getPosition().equals(otherAnimal.getPosition());
     }
 
     @Override
     public String toString(){
-        return "A";
+        return "" + this.id;
     }
 }
