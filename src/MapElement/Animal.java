@@ -46,7 +46,7 @@ public class Animal extends AbstractMapElement{
         this.map = map;
         this.orientation = orientation;
         this.currentEnergy = currentEnergy;
-        this.genotype = new Genotype();
+        this.genotype = genes;
     }
 
     public double getCurrentEnergy(){

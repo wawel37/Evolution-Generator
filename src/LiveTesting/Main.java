@@ -23,7 +23,7 @@ public class Main {
     }
 
     public static void test5(){
-        Vector2d myPosition1 = new Vector2d(0,0);
+        Vector2d myPosition1 = new Vector2d(1,1);
         Grass grass1 = new Grass(myPosition1, 11);
         GameMap map = new GameMap(10, 10, 0.8);
         Animal animal1 = new Animal(myPosition1, 20, 20, 1, new Genotype(), map, map, Orientation.NORTH);
@@ -31,9 +31,10 @@ public class Main {
         System.out.println(map.placeGrass(grass1));
         map.addAnimal(animal1);
         map.addAnimal(animal2);
-        System.out.println(animal1.genotype);
-        System.out.println(animal2.genotype);
-        map.copulateAllAnimals();
+        printAllAnimals(map);
+        for(int i = 0; i < 8; i++) {
+            map.copulateAllAnimals();
+        }
         printAllAnimals(map);
     }
 
@@ -119,7 +120,6 @@ public class Main {
                 Animal myAnimal = iterator.next();
                 System.out.println(myAnimal.getPosition());
                 System.out.println("Energy: " + myAnimal.getCurrentEnergy());
-                System.out.println("Genotypes: " + myAnimal.genotype);
             }
         }
     }

@@ -6,7 +6,6 @@ import Math.*;
 
 
 import java.util.*;
-import java.util.Random;
 
 public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected final int width;
@@ -151,7 +150,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         energyForNewAnimal += strongestAnimal1.copulating();
         energyForNewAnimal += strongestAnimal2.copulating();
 
-        Vector2d positionForNewAnimal =  this.getPositionAfterMove(position.add(Orientation.values()[randomGenerator.nextInt(8)].toUnitVector()));
+        Vector2d positionForNewAnimal =  this.getPositionForNewAnimal(position);
         Orientation orientationForNewAnimal = Orientation.values()[this.randomGenerator.nextInt(8)];
 
         Animal newAnimal = new Animal (positionForNewAnimal, this.startEnergy, energyForNewAnimal, this.moveEnergy, new Genotype(strongestAnimal1, strongestAnimal2), this, this, orientationForNewAnimal);
@@ -176,6 +175,21 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
             }
         }
         return strongestAnimalsAtPosition;
+    }
+
+    public Vector2d getPositionForNewAnimal(Vector2d position){
+        List<Vector2d> freeSpaces = new ArrayList<>();
+        for(int i = 0; i < 8; i++){
+            Vector2d myVector = this.getPositionAfterMove(position.add(Orientation.values()[i].toUnitVector()));
+            if (!this.isOccupiedByAnimal(myVector)){
+                freeSpaces.add(myVector);
+            }
+        }
+        if (freeSpaces.size() != 0){
+            return freeSpaces.get(this.randomGenerator.nextInt(freeSpaces.size()));
+        }else{
+            return this.getPositionAfterMove(position.add(Orientation.values()[this.randomGenerator.nextInt(8)].toUnitVector()));
+        }
     }
 
 
@@ -253,13 +267,11 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         if (jungle.size() != 0){
             Grass grassToPlace = new Grass(jungle.get(this.randomGenerator.nextInt(jungle.size())), this.plantEnergy);
             this.placeGrass(grassToPlace);
-            System.out.println("W jungli: " + grassToPlace.getPosition());
         }
 
         if (steppe.size() != 0){
             Grass grassToPlace = new Grass(steppe.get(this.randomGenerator.nextInt(steppe.size())), this.plantEnergy);
             this.placeGrass(grassToPlace);
-            System.out.println("Na stepie: " + grassToPlace.getPosition());
         }
     }
 

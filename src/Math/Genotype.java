@@ -25,7 +25,6 @@ public class Genotype {
     public Genotype(Animal animal1, Animal animal2){
         int index1 = this.randomGenerator.nextInt(GENOTYPES_LENGTH - 2) + 1;
         int index2 = this.randomGenerator.nextInt(GENOTYPES_LENGTH - index1 - 1) + index1;
-        System.out.println(index1 + " " + index2);
         for (int i = 0; i < index1; i++){
             this.genes[i] = animal1.genotype.genes[i];
         }
