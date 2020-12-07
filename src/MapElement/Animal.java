@@ -2,7 +2,7 @@ package MapElement;
 import Map.IPositionChangeObserver;
 import Map.IWorldMap;
 import Enums.*;
-import Math.Vector2d;
+import Math.*;
 
 
 import java.util.ArrayList;
@@ -16,24 +16,26 @@ public class Animal extends AbstractMapElement{
 
     public final double startEnergy;
     public final double moveEnergy;
+    public final Genotype genotype;
     private double currentEnergy;
     private IPositionChangeObserver observer;
     private IWorldMap map;
     private Orientation orientation;
-    private List<Integer> gens = new ArrayList<>();
+
 
     //Constructor for tests
     public Animal (Vector2d position){
         this.position = position;
         this.startEnergy = 10;
         this.moveEnergy = 10;
-        this.setRandomGens();
+        this.genotype = new Genotype();
     }
 
     public Animal (Vector2d position,
                    double startEnergy,
                    double currentEnergy,
                    double moveEnergy,
+                   Genotype genes,
                    IPositionChangeObserver observer,
                    IWorldMap map,
                    Orientation orientation){
@@ -44,7 +46,7 @@ public class Animal extends AbstractMapElement{
         this.map = map;
         this.orientation = orientation;
         this.currentEnergy = currentEnergy;
-        this.setRandomGens();
+        this.genotype = new Genotype();
     }
 
     public double getCurrentEnergy(){
@@ -75,7 +77,7 @@ public class Animal extends AbstractMapElement{
     }
 
     private void rotate(){
-        int myRotation = this.gens.get(this.randomGenerator.nextInt(32));
+        int myRotation = this.genotype.getRandomGene();
         this.orientation = Orientation.values()[(this.orientation.ordinal()+myRotation)%8];
     }
 
@@ -83,12 +85,6 @@ public class Animal extends AbstractMapElement{
         this.observer.deleteAnimal(this, this.position);
     }
 
-    private void setRandomGens(){
-        for(int i = 0; i < 32; i++){
-            this.gens.add(this.randomGenerator.nextInt(8));
-        }
-        Collections.sort(this.gens);
-    }
 
     @Override
     public boolean equals(Object other){

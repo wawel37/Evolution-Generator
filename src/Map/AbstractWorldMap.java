@@ -1,7 +1,7 @@
 package Map;
 import Enums.Orientation;
 import MapElement.*;
-import Math.Vector2d;
+import Math.*;
 
 
 
@@ -154,7 +154,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         Vector2d positionForNewAnimal =  this.getPositionAfterMove(position.add(Orientation.values()[randomGenerator.nextInt(8)].toUnitVector()));
         Orientation orientationForNewAnimal = Orientation.values()[this.randomGenerator.nextInt(8)];
 
-        Animal newAnimal = new Animal (positionForNewAnimal, this.startEnergy, energyForNewAnimal, this.moveEnergy, this, this, orientationForNewAnimal);
+        Animal newAnimal = new Animal (positionForNewAnimal, this.startEnergy, energyForNewAnimal, this.moveEnergy, new Genotype(strongestAnimal1, strongestAnimal2), this, this, orientationForNewAnimal);
 
         return newAnimal;
     }
@@ -320,8 +320,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         int rightUppery = height-((int)Math.ceil(((double)(height-jungleHeight))/2))-1;
         this.leftLowerJungleVector = new Vector2d(leftLowerx, leftLowery);
         this.rightUpperJungleVector = new Vector2d(rightUpperx, rightUppery);
-        System.out.println("Leftdown: " + this.leftLowerJungleVector + " Rightup: " + this.rightUpperJungleVector);
-        System.out.println(Math.ceil((height-jungleHeight)/2));
     }
 
 

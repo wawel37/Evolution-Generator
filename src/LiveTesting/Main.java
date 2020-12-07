@@ -1,6 +1,5 @@
 package LiveTesting;
 import Enums.Orientation;
-import Map.IPositionChangeObserver;
 import MapElement.*;
 import Math.*;
 import Map.*;
@@ -13,27 +12,28 @@ public class Main {
         test5();
     }
 
+    public static void test6(){
+        Genotype genes = new Genotype();
+        while(NoGenes(genes)) {
+            genes = new Genotype();
+            for (int i = 0; i < 32; i++) {
+                System.out.print(genes.genes[i]);
+            }
+        }
+    }
+
     public static void test5(){
         Vector2d myPosition1 = new Vector2d(0,0);
         Grass grass1 = new Grass(myPosition1, 11);
         GameMap map = new GameMap(10, 10, 0.8);
-        Animal animal1 = new Animal(myPosition1, 20, 20, 1, map, map, Orientation.NORTH);
-        Animal animal2 = new Animal(myPosition1, 30,30,  1, map, map, Orientation.NORTH);
-        Animal animal3 = new Animal(myPosition1, 30, 40, 1, map, map, Orientation.NORTH);
-        Animal animal4 = new Animal(myPosition1, 20,20,  1, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 20, 20, 1, new Genotype(), map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition1, 30,30,  1, new Genotype(), map, map, Orientation.NORTH);
         System.out.println(map.placeGrass(grass1));
         map.addAnimal(animal1);
         map.addAnimal(animal2);
-        printAllAnimals(map);
-        printAllGrasses(map);
-        map.eatAllGrasses();
-        printAllAnimals(map);
-        printAllGrasses(map);
+        System.out.println(animal1.genotype);
+        System.out.println(animal2.genotype);
         map.copulateAllAnimals();
-        printAllAnimals(map);
-        map.copulateAllAnimals();
-        printAllAnimals(map);
-        map.moveAllAnimals();
         printAllAnimals(map);
     }
 
@@ -41,8 +41,8 @@ public class Main {
         Vector2d myPosition1 = new Vector2d(2,2);
         Grass grass1 = new Grass(myPosition1, 11);
         GameMap map = new GameMap(10, 10, 0.8);
-        Animal animal1 = new Animal(myPosition1, 20, 20, 1, map, map, Orientation.NORTH);
-        Animal animal2 = new Animal(myPosition1, 20,20,  1, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 20, 20, 1, new Genotype(), map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition1, 20,20,  1, new Genotype(), map, map, Orientation.NORTH);
         System.out.println(map.placeGrass(grass1));
         map.addAnimal(animal1);
         map.addAnimal(animal2);
@@ -65,7 +65,7 @@ public class Main {
         Grass grass3 = new Grass(myPosition3, 10);
         Grass grass4 = new Grass(myPosition3, 10);
         GameMap map = new GameMap(10, 10, 0.8);
-        Animal animal1 = new Animal(myPosition1, 10, 10, 0.5, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 10, 10, 0.5, new Genotype(), map, map, Orientation.NORTH);
 //        Animal animal2 = new Animal(myPosition2, 10, 0.5, map, map, Orientation.NORTH);
         map.placeAnimal(animal1);
 //        map.placeAnimal(animal2);
@@ -84,16 +84,16 @@ public class Main {
         Vector2d myPosition1 = new Vector2d(2,2);
         Vector2d myPosition2 = new Vector2d(3,3);
         GameMap map = new GameMap(10, 10, 0.8);
-        Animal animal1 = new Animal(myPosition1, 10, 10, 10, map, map, Orientation.NORTH);
-        Animal animal2 = new Animal(myPosition2, 10, 10, 10, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 10, 10, 10, new Genotype(), map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition2, 10, 10, 10, new Genotype(), map, map, Orientation.NORTH);
     }
 
     public static void test1(){
         Vector2d myPosition1 = new Vector2d(2,2);
         Vector2d myPosition2 = new Vector2d(3,3);
         GameMap map = new GameMap(10, 10, 0.5);
-        Animal animal1 = new Animal(myPosition1, 10, 10, 10, map, map, Orientation.NORTH);
-        Animal animal2 = new Animal(myPosition2, 10, 10, 10, map, map, Orientation.NORTH);
+        Animal animal1 = new Animal(myPosition1, 10, 10, 10, new Genotype(), map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition2, 10, 10, 10, new Genotype(), map, map, Orientation.NORTH);
         map.placeAnimal(animal1);
         map.placeAnimal(animal2);
         System.out.println("Jałowa pozycja animala1: " + animal1.getPosition());
@@ -119,6 +119,7 @@ public class Main {
                 Animal myAnimal = iterator.next();
                 System.out.println(myAnimal.getPosition());
                 System.out.println("Energy: " + myAnimal.getCurrentEnergy());
+                System.out.println("Genotypes: " + myAnimal.genotype);
             }
         }
     }
@@ -128,5 +129,16 @@ public class Main {
             System.out.println("Pozycje grassow na pozycji" + entry.getKey() + ":");
             System.out.println(entry.getValue().getPosition());
         }
+    }
+
+    public static boolean NoGenes(Genotype myGenes){
+        for (int i = 0; i < 8; i++){
+            int counter = 0;
+            for (int j = 0; j < 32; j++){
+                if (myGenes.genes[j] == i) counter++;
+            }
+            if (counter == 0) return false;
+        }
+        return true;
     }
 }
