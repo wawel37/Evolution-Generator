@@ -21,6 +21,11 @@ public class Animal extends AbstractMapElement{
     private Orientation orientation;
     public final int id;
 
+    //Statistic variables
+    private int age = 0;
+    private int descendantCounter = 0;
+
+
 
     public Animal (Vector2d position,
                    double startEnergy,
@@ -51,6 +56,7 @@ public class Animal extends AbstractMapElement{
             this.die();
             return;
         }
+        this.age++;
         this.currentEnergy -= this.moveEnergy;
         Vector2d oldPosition = this.position;
         Animal oldAnimal = this;
@@ -64,6 +70,7 @@ public class Animal extends AbstractMapElement{
     }
 
     public double copulating(){
+        this.descendantCounter++;
         double result = this.currentEnergy/4;
         this.currentEnergy -= result;
         return result;

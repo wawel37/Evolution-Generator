@@ -22,6 +22,11 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected double startEnergy;
     protected double moveEnergy;
 
+    //Statistic variables
+    protected int animalCounter;
+    protected int  grassCounter;
+
+
     public AbstractWorldMap(int width,
                             int height,
                             double jungleRatio,
@@ -384,17 +389,25 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
             result += ("Pozycje animalow na pozycji " + entry.getKey() + ":" + "\n");
             while(iterator.hasNext()){
                 Animal myAnimal = iterator.next();
-                result += (myAnimal.getPosition() + " " + myAnimal.id + "\n");
+                result += (myAnimal.getPosition() + " " + myAnimal.id + " ");
                 result +=("Energy: " + myAnimal.getCurrentEnergy() + "\n");
             }
         }
 
         for (Map.Entry<Vector2d, Grass> entry : this.grasses.entrySet()){
-            result += ("Pozycje grassow na pozycji" + entry.getKey() + ":" + "\n");
+            result += ("Pozycje grassow na pozycji" + entry.getKey() + ":" + " ");
             result += (entry.getValue().getPosition() + "\n");
         }
 
         return result;
+    }
+
+    public Vector2d getLeftLowerJungleVector(){
+        return this.leftLowerJungleVector;
+    }
+
+    public Vector2d getRightUpperJungleVector(){
+        return this.rightUpperJungleVector;
     }
 
 }

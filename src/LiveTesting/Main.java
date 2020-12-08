@@ -4,19 +4,31 @@ import MapElement.*;
 import Math.*;
 import Map.*;
 import Simulation.*;
+import Visualization.*;
+import java.awt.EventQueue;
 
 import java.util.*;
 
 public class Main {
 
     public static void main(String[] args){
-        test8();
+        test9();
+    }
+
+    public static void test9() {
+        SimulationEngine engine = new SimulationEngine(101, 101, 0.6, 10, 30, 5, 50);
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Frame(engine);
+            }
+        });
     }
 
     public static void test8(){
         Vector2d myPosition1 = new Vector2d(1,1);
         Grass grass1 = new Grass(myPosition1, 11);
-        GameMap map = new GameMap(10, 10, 0.8, 10, 30, 1);
+        GameMap map = new GameMap(6, 6, 0.5, 10, 30, 1);
         Animal animal1 = new Animal(myPosition1, 30, 20, 1, new Genotype(), map, map, Orientation.NORTH);
         Animal animal2 = new Animal(myPosition1, 30,10,  1, new Genotype(), map, map, Orientation.NORTH);
         Animal animal3 = new Animal(myPosition1, 30,45,  1, new Genotype(), map, map, Orientation.NORTH);
@@ -35,8 +47,8 @@ public class Main {
     }
 
     public static void test7(){
-        SimulationEngine engine = new SimulationEngine(10, 10, 0.8, 10, 30, 5, 1);
-        for(int i = 0; i < 100000; i++){
+        SimulationEngine engine = new SimulationEngine(5, 5, 0.5, 10, 30, 5, 10);
+        for(int i = 0; i < 100; i++){
             System.out.println(engine);
             engine.run();
         }
@@ -54,7 +66,7 @@ public class Main {
     public static void test5(){
         Vector2d myPosition1 = new Vector2d(1,1);
         Grass grass1 = new Grass(myPosition1, 11);
-        GameMap map = new GameMap(10, 10, 0.8, 10, 30, 1);
+        GameMap map = new GameMap(101, 101, 0.8, 10, 30, 1);
         Animal animal1 = new Animal(myPosition1, 30, 20, 1, new Genotype(), map, map, Orientation.NORTH);
         Animal animal2 = new Animal(myPosition1, 30,30,  1, new Genotype(), map, map, Orientation.NORTH);
         System.out.println(map.placeGrass(grass1));
