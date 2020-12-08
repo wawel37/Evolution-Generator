@@ -14,13 +14,13 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected Vector2d leftLowerJungleVector;
     protected Vector2d rightUpperJungleVector;
     protected Map<Vector2d, Grass> grasses = new HashMap<>();
-    protected Map<Vector2d, TreeSet<Animal>> animals = new HashMap<>();
+    protected Map<Vector2d, List<Animal>> animals = new HashMap<>();
     protected Random randomGenerator = new Random();
 
     //these variables will be injected from Graphical InterFace or simulation engine
-    protected double plantEnergy = 10;
-    protected double startEnergy = 30;
-    protected double moveEnergy = 0.5;
+    protected double plantEnergy;
+    protected double startEnergy;
+    protected double moveEnergy;
 
     public AbstractWorldMap(int width,
                             int height,
@@ -104,7 +104,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     //Putting animal on the map without checking if the position is occupied
     public void addAnimal(Animal animal){
         if (this.animals.get(animal.getPosition()) == null){
-            this.animals.put(animal.getPosition(), new TreeSet<Animal>(new AnimalComparatorByCurrentEnergy()));
+            this.animals.put(animal.getPosition(), new LinkedList<Animal>());
         }
         this.animals.get(animal.getPosition()).add(animal);
     }
@@ -136,13 +136,14 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     public Animal getNewAnimalAtPosition(Vector2d position){
         if (!this.isOccupiedByAnimal(position) || this.animals.get(position).size() == 1) return null;
 
+        //in getStringestAnimalsAtPosition, animals at given position are being sorted by their currentEnergy
         List<Animal> strongestAnimals = this.getStrongestAnimalsAtPosition(position);
         Animal strongestAnimal1 = null;
         Animal strongestAnimal2 = null;
 
         if (strongestAnimals.size() < 2){
-            strongestAnimal1 = this.animals.get(position).first();
-            strongestAnimal2 = this.animals.get(position).higher(strongestAnimal1);
+            strongestAnimal1 = this.animals.get(position).get(0);
+            strongestAnimal2 = this.animals.get(position).get(1);
         }else {
             int index1 = this.randomGenerator.nextInt(strongestAnimals.size());
             int index2;
@@ -183,9 +184,10 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         REMEMBER TO CHECK IF THE POSITION IS OCCUPIED BY ANY ANIMAL
     */
     public List<Animal> getStrongestAnimalsAtPosition(Vector2d position){
-        TreeSet<Animal> myAnimals = this.animals.get(position);
+        List<Animal> myAnimals = this.animals.get(position);
+        Collections.sort(myAnimals, new AnimalComparatorByCurrentEnergy());
         List<Animal> strongestAnimalsAtPosition = new ArrayList<>();
-        double maxEnergy = myAnimals.first().getCurrentEnergy();
+        double maxEnergy = myAnimals.get(0).getCurrentEnergy();
         Iterator<Animal> iterator = myAnimals.iterator();
 
         while(iterator.hasNext()){
@@ -198,7 +200,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     }
 
     public Vector2d getPositionForNewAnimal(Vector2d position){
-        List<Vector2d> freeSpaces = new ArrayList<>();
+        List<Vector2d> freeSpaces = new LinkedList<>();
         for(int i = 0; i < 8; i++){
             Vector2d myVector = this.getPositionAfterMove(position.add(Orientation.values()[i].toUnitVector()));
             if (!this.isOccupiedByAnimal(myVector)){
@@ -214,7 +216,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
 
     //Getter for animals
-    public Map<Vector2d, TreeSet<Animal>> getAnimals(){
+    public Map<Vector2d, List<Animal>> getAnimals(){
         return this.animals;
     }
 
@@ -233,24 +235,20 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
     //Moving all the animals at the same time
     public void moveAllAnimals(){
-        List<Animal> toMove = new ArrayList<>();
+        List<Animal> toMove = new LinkedList<>();
 
         //First we get all the animals that exist on the map
-        for(Map.Entry<Vector2d, TreeSet<Animal>> entry : this.animals.entrySet()){
+        for(Map.Entry<Vector2d, List<Animal>> entry : this.animals.entrySet()){
             Iterator<Animal> iterator = entry.getValue().iterator();
             while(iterator.hasNext()){
                 toMove.add(iterator.next());
             }
         }
-//
         /*
             Then we move each one of them, if it doesn't have enough energy to move,
              it simply dies, that's how life goes ¯\_(ツ)_/¯
         */
         for(Animal animal : toMove){
-            if(!this.animals.get(animal.getPosition()).contains(animal)){
-                System.out.println("tutaj");
-            }
             animal.move();
         }
     }
@@ -264,10 +262,10 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     }
 
     public void copulateAllAnimals(){
-        List<Animal> toAdd = new ArrayList<Animal>();
+        List<Animal> toAdd = new LinkedList<Animal>();
 
         //Getting all new animals that were created thought the copulation at very single point where was it possible
-        for(Map.Entry<Vector2d, TreeSet<Animal>> entry : this.animals.entrySet()){
+        for(Map.Entry<Vector2d, List<Animal>> entry : this.animals.entrySet()){
             Animal recievedAnimal = this.getNewAnimalAtPosition(entry.getKey());
             if (recievedAnimal != null){
                 toAdd.add(recievedAnimal);
@@ -321,7 +319,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
     //Here i can if the zones arent full so i can place there a grass
     public List<Vector2d> steppeFreeSpace(){
-        List<Vector2d> result = new ArrayList<>();
+        List<Vector2d> result = new LinkedList<>();
         if (this.jungleRatio == 1) return result;
 
         //checking bottom part
@@ -356,7 +354,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
     //Getting all the free spaces in the jungle, if there is none, we return NULL
     public List<Vector2d> jungleFreeSpaces(){
-        List<Vector2d> result = new ArrayList<Vector2d>();
+        List<Vector2d> result = new LinkedList<Vector2d>();
         if(this.jungleRatio == 0) return result;
         for(int x = this.leftLowerJungleVector.x; x <= this.rightUpperJungleVector.x; x++) {
             for (int y = this.leftLowerJungleVector.y; y <= this.rightUpperJungleVector.y; y++) {
@@ -381,7 +379,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     @Override
     public String toString(){
         String result = "";
-        for (Map.Entry<Vector2d, TreeSet<Animal>> entry : this.animals.entrySet()){
+        for (Map.Entry<Vector2d, List<Animal>> entry : this.animals.entrySet()){
             Iterator<Animal> iterator = entry.getValue().iterator();
             result += ("Pozycje animalow na pozycji " + entry.getKey() + ":" + "\n");
             while(iterator.hasNext()){

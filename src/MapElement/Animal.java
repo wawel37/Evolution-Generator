@@ -88,7 +88,9 @@ public class Animal extends AbstractMapElement{
         if (this == other) return true;
         if (this.hashCode() != other.hashCode()) return false;
         Animal otherAnimal = (Animal) other;
-        return this.getPosition().equals(otherAnimal.getPosition());
+        return this.id == otherAnimal.id
+                && this.getPosition().equals(otherAnimal.getPosition())
+                && this.getCurrentEnergy() == otherAnimal.getCurrentEnergy();
     }
 
     @Override

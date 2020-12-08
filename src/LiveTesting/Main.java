@@ -10,12 +10,33 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args){
-        test7();
+        test8();
+    }
+
+    public static void test8(){
+        Vector2d myPosition1 = new Vector2d(1,1);
+        Grass grass1 = new Grass(myPosition1, 11);
+        GameMap map = new GameMap(10, 10, 0.8, 10, 30, 1);
+        Animal animal1 = new Animal(myPosition1, 30, 20, 1, new Genotype(), map, map, Orientation.NORTH);
+        Animal animal2 = new Animal(myPosition1, 30,10,  1, new Genotype(), map, map, Orientation.NORTH);
+        Animal animal3 = new Animal(myPosition1, 30,45,  1, new Genotype(), map, map, Orientation.NORTH);
+        Animal animal4 = new Animal(myPosition1, 30,40,  1, new Genotype(), map, map, Orientation.NORTH);
+        System.out.println(map.placeGrass(grass1));
+        map.addAnimal(animal1);
+        map.addAnimal(animal2);
+        map.addAnimal(animal3);
+        map.addAnimal(animal4);
+        for (int i = 0; i < 2; i++){
+            System.out.println(map);
+            System.out.println(map.getStrongestAnimalsAtPosition(myPosition1));
+            map.eatAllGrasses();
+            map.copulateAllAnimals();
+        }
     }
 
     public static void test7(){
-        SimulationEngine engine = new SimulationEngine(10, 10, 0.8, 10, 30, 1, 3);
-        for(int i = 0; i < 100; i++){
+        SimulationEngine engine = new SimulationEngine(10, 10, 0.8, 10, 30, 5, 1);
+        for(int i = 0; i < 100000; i++){
             System.out.println(engine);
             engine.run();
         }
@@ -120,7 +141,7 @@ public class Main {
     }
 
     public static void printAllAnimals(GameMap map){
-        for (Map.Entry<Vector2d, TreeSet<Animal>> entry : map.getAnimals().entrySet()){
+        for (Map.Entry<Vector2d, List<Animal>> entry : map.getAnimals().entrySet()){
             Iterator<Animal> iterator = entry.getValue().iterator();
             System.out.println("Pozycje animalow na pozycji " + entry.getKey() + ":");
             while(iterator.hasNext()){
