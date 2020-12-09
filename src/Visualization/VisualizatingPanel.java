@@ -17,17 +17,20 @@ public class VisualizatingPanel extends JPanel{
     public SimulationEngine engine;
     private int widthRatio;
     private int heightRatio;
+    private InformationPanel infoPanel;
 
-    public VisualizatingPanel(SimulationEngine engine){
+    public VisualizatingPanel(SimulationEngine engine, InformationPanel infoPanel){
         this.engine = engine;
+        this.infoPanel = infoPanel;
         this.widthRatio = (int)Math.floor(this.PANEL_WIDTH/this.engine.WIDTH);
         this.heightRatio = (int)Math.floor(this.PANEL_HEIGHT/this.engine.HEIGHT);
         this.PANEL_WIDTH = this.widthRatio*this.engine.WIDTH;
         this.PANEL_HEIGHT = this.heightRatio*this.engine.HEIGHT;
 
-
-        setSize(this.PANEL_WIDTH,this.PANEL_HEIGHT);
-        setPreferredSize(new Dimension(this.PANEL_WIDTH,this.PANEL_HEIGHT));
+        Timer timer = new Timer(100, new GameLoop(this));
+        timer.start();
+        setPreferredSize(new Dimension(this.PANEL_WIDTH, this.PANEL_HEIGHT));
+        System.out.println(this.PANEL_HEIGHT + " " + this.PANEL_WIDTH);
     }
 
 
@@ -35,10 +38,10 @@ public class VisualizatingPanel extends JPanel{
     public void paint(Graphics g){
         super.paintComponent(g);
 
-//        this.drawSteppe(g);
-//        this.drawJungle(g);
+        this.drawSteppe(g);
+        this.drawJungle(g);
         this.drawGrasses(g);
-//        this.drawAnimals(g);
+        this.drawAnimals(g);
 
 
     }
@@ -59,12 +62,6 @@ public class VisualizatingPanel extends JPanel{
 
     private void drawGrasses(Graphics g){
         List<Vector2d> grassesPositions = this.engine.getGrassesPositions();
-//        List<Vector2d> grassesPositions = new LinkedList<Vector2d>();
-//        Random random = new Random();
-//        for(int i = 0; i < 200; i++){
-//            grassesPositions.add(new Vector2d(random.nextInt(800), random.nextInt(800)));
-//        }
-        System.out.println(grassesPositions.size());
         g.setColor(new Color(236,179,72));
         Iterator<Vector2d> iterator = grassesPositions.iterator();
         while(iterator.hasNext()){
@@ -82,6 +79,12 @@ public class VisualizatingPanel extends JPanel{
             Vector2d myVector = iterator.next();
             g.fillRect(myVector.x*this.widthRatio, this.PANEL_HEIGHT-((myVector.y+1)*this.heightRatio), this.widthRatio, this.heightRatio);
         }
+    }
+
+    public void loop(){
+        this.engine.run();
+        repaint();
+        this.infoPanel.updateValues();
     }
 
 

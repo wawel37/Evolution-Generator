@@ -16,7 +16,7 @@ public class Main {
     }
 
     public static void test9() {
-        new SimulationEngine(225, 225, 0.4, 70, 1000, 1, 1000).startAppFrame();
+        new SimulationEngine(225, 225, 0.4, 70, 1000, 1, 100).startAppFrame();
     }
 
     public static void test8(){
