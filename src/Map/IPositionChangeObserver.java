@@ -8,4 +8,6 @@ public interface IPositionChangeObserver {
     void deleteGrass(Vector2d position);
 
     void deleteAnimal(Animal animal, Vector2d position);
+
+    void calculateAverageAge(int age);
 }

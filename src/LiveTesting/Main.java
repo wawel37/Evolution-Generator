@@ -16,13 +16,7 @@ public class Main {
     }
 
     public static void test9() {
-        SimulationEngine engine = new SimulationEngine(101, 101, 0.6, 10, 30, 5, 50);
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Frame(engine);
-            }
-        });
+        new SimulationEngine(225, 225, 0.4, 70, 1000, 1, 1000).startAppFrame();
     }
 
     public static void test8(){
@@ -38,19 +32,21 @@ public class Main {
         map.addAnimal(animal2);
         map.addAnimal(animal3);
         map.addAnimal(animal4);
-        for (int i = 0; i < 2; i++){
-            System.out.println(map);
-            System.out.println(map.getStrongestAnimalsAtPosition(myPosition1));
+        System.out.println(map);
+        for (int i = 0; i < 5; i++){
             map.eatAllGrasses();
             map.copulateAllAnimals();
+            System.out.println(map.getStrongestAnimalsAtPosition(myPosition1));
+            System.out.println(map);
         }
     }
 
     public static void test7(){
-        SimulationEngine engine = new SimulationEngine(5, 5, 0.5, 10, 30, 5, 10);
-        for(int i = 0; i < 100; i++){
-            System.out.println(engine);
+        SimulationEngine engine = new SimulationEngine(5, 5, 0.5, 10, 30, 5, 15);
+        System.out.println(engine);
+        for(int i = 0; i < 6; i++){
             engine.run();
+            System.out.println(engine);
         }
     }
 

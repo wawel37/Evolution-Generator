@@ -1,9 +1,6 @@
 package Math;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Arrays;
+import java.util.*;
 
 import MapElement.Animal;
 
@@ -87,9 +84,9 @@ public class Genotype {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String result = "";
-        for (Integer a : this.genes){
+        for (Integer a : this.genes) {
             result += a;
         }
         return result;

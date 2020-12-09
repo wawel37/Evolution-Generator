@@ -23,8 +23,18 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected double moveEnergy;
 
     //Statistic variables
-    protected int animalCounter;
-    protected int  grassCounter;
+
+    //Main stats
+    protected int animalCounter = 0;
+    protected int grassCounter = 0;
+    protected int dominatingGenotype = -1;
+    protected double averageEnergy = 0;
+    protected double averageAge = 0;
+    protected double averageDescendants = 0;
+
+    //Helping stats
+    protected int ageSum = 0;
+    protected int deadAnimalCounter = 0;
 
 
     public AbstractWorldMap(int width,
@@ -54,6 +64,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     public boolean placeGrass(Grass grass){
         if (this.objectsAt(grass.getPosition()).size() == 0){
             this.grasses.put(grass.getPosition(), grass);
+            this.grassCounter++;
             return true;
         }
         return false;
@@ -95,11 +106,13 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
     @Override
     public void deleteGrass(Vector2d position){
+        this.grassCounter--;
         this.grasses.remove(position);
     }
 
     @Override
     public void deleteAnimal(Animal animal, Vector2d position){
+        this.animalCounter--;
         this.animals.get(position).remove(animal);
         if(this.animals.get(position).isEmpty()){
             this.animals.remove(position);
@@ -112,6 +125,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
             this.animals.put(animal.getPosition(), new LinkedList<Animal>());
         }
         this.animals.get(animal.getPosition()).add(animal);
+        this.animalCounter++;
     }
 
     /*
@@ -238,19 +252,23 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         return result;
     }
 
-    //Moving all the animals at the same time
-    public void moveAllAnimals(){
-        List<Animal> toMove = new LinkedList<>();
+    public List<Animal> getAnimalsAsList(){
+        List<Animal> result = new LinkedList<>();
 
-        //First we get all the animals that exist on the map
         for(Map.Entry<Vector2d, List<Animal>> entry : this.animals.entrySet()){
             Iterator<Animal> iterator = entry.getValue().iterator();
             while(iterator.hasNext()){
-                toMove.add(iterator.next());
+                result.add(iterator.next());
             }
         }
+        return result;
+    }
+
+    //Moving all the animals at the same time
+    public void moveAllAnimals(){
+        List<Animal> toMove = this.getAnimalsAsList();
         /*
-            Then we move each one of them, if it doesn't have enough energy to move,
+            We move each one of them, if it doesn't have enough energy to move,
              it simply dies, that's how life goes ¯\_(ツ)_/¯
         */
         for(Animal animal : toMove){
@@ -398,6 +416,12 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
             result += ("Pozycje grassow na pozycji" + entry.getKey() + ":" + " ");
             result += (entry.getValue().getPosition() + "\n");
         }
+        result += "dominating genotype: " + this.dominatingGenotype + "\n";
+        result += "average Age: " + this.averageAge + "\n";
+        result += "average energy: " + this.averageEnergy + "\n";
+        result += "average descendants: " + this.averageDescendants + "\n";
+        result += "Animal counter: " + this.animalCounter + "\n";
+        result += "Grass counter: " + this.grassCounter + "\n";
 
         return result;
     }
@@ -409,5 +433,81 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     public Vector2d getRightUpperJungleVector(){
         return this.rightUpperJungleVector;
     }
+
+    public void calculateAverageAge(int age){
+        this.deadAnimalCounter++;
+        this.ageSum += age;
+        this.averageAge = (double)this.ageSum/(double)this.deadAnimalCounter;
+    }
+
+    private void calculateAverageEnergy(){
+        List<Animal> myAnimals = this.getAnimalsAsList();
+        Iterator<Animal> iterator = myAnimals.iterator();
+        double energySum = 0;
+        while(iterator.hasNext()){
+            energySum += iterator.next().getCurrentEnergy();
+        }
+        if (this.animalCounter == 0){
+            this.averageEnergy = 0;
+        }else {
+            this.averageEnergy = energySum / (double) this.animalCounter;
+        }
+    }
+
+    private void calculateAverageDescendants(){
+        List<Animal> myAnimals = this.getAnimalsAsList();
+        Iterator<Animal> iterator = myAnimals.iterator();
+        int descendantsSum = 0;
+        while(iterator.hasNext()){
+            descendantsSum += iterator.next().getDescendantCounter();
+        }
+        if (this.animalCounter == 0){
+            this.averageEnergy = 0;
+        }else {
+            this.averageDescendants = (double) descendantsSum / (double) this.animalCounter;
+        }
+    }
+
+    private void calculateDominatingGenotype(){
+        Integer[] genotypeCounter = new Integer[8];
+        for (int i = 0; i < 8; i++){
+            genotypeCounter[i] = 0;
+        }
+        List<Animal> myAnimals = this.getAnimalsAsList();
+        Iterator<Animal> iterator = myAnimals.iterator();
+        while(iterator.hasNext()){
+            Animal myAnimal = iterator.next();
+            for(int i = 0; i < 32; i++){
+                genotypeCounter[myAnimal.genotype.genes[i]]++;
+            }
+        }
+        int largest = 0;
+        int largestvalue = 0;
+        for(int i = 0; i < 8; i++){
+            if (genotypeCounter[i] > largestvalue){
+                largestvalue = genotypeCounter[i];
+                largest = i;
+            }
+        }
+        this.dominatingGenotype = largest;
+    }
+
+    public void calculateStatistics(){
+        this.calculateAverageDescendants();
+        this.calculateAverageEnergy();
+        this.calculateDominatingGenotype();
+    }
+
+    /*
+        GETTERS FOR STATISTICS
+     */
+
+    public int getAnimalCounter(){ return this.animalCounter; }
+    public int getGrassCounter(){ return this.grassCounter; }
+    public int getDominatingGenotype(){ return this.dominatingGenotype; }
+    public double getAverageEnergy(){ return this.averageEnergy; }
+    public double getAverageAge(){ return this.averageAge; }
+    public double getAverageDescendants(){ return this.averageDescendants; }
+
 
 }

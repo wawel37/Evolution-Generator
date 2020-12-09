@@ -83,11 +83,13 @@ public class Animal extends AbstractMapElement{
 
     private void die(){
         this.observer.deleteAnimal(this, this.getPosition());
+        this.observer.calculateAverageAge(this.age);
+        this.observer = null;
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(this.currentEnergy, this.id, this.orientation, this.position, this.genotype, this.randomGenerator);
+        return Objects.hash(this.id);
     }
 
     @Override
@@ -95,13 +97,19 @@ public class Animal extends AbstractMapElement{
         if (this == other) return true;
         if (this.hashCode() != other.hashCode()) return false;
         Animal otherAnimal = (Animal) other;
-        return this.id == otherAnimal.id
-                && this.getPosition().equals(otherAnimal.getPosition())
-                && this.getCurrentEnergy() == otherAnimal.getCurrentEnergy();
+        return this.id == otherAnimal.id;
     }
 
     @Override
     public String toString(){
         return "" + this.id;
+    }
+
+    public int getAge(){
+        return this.age;
+    }
+
+    public int getDescendantCounter(){
+        return this.descendantCounter;
     }
 }

@@ -4,10 +4,14 @@ import MapElement.Animal;
 import MapElement.Grass;
 import Math.*;
 import Map.GameMap;
+import Visualization.Frame;
 
+import javax.swing.Timer;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 
 public class SimulationEngine implements ISimulation {
     public final int WIDTH;
@@ -45,6 +49,7 @@ public class SimulationEngine implements ISimulation {
         this.map.eatAllGrasses();
         this.map.copulateAllAnimals();
         this.map.placeTwoGrasses();
+        this.map.calculateStatistics();
     }
 
     public List<Vector2d> getAnimalsPositions(){
@@ -65,8 +70,13 @@ public class SimulationEngine implements ISimulation {
         return result;
     }
 
+    public void startAppFrame(){
+       Frame frame =  new Frame(this);
+    }
+
     @Override
     public String toString(){
         return this.map.toString();
     }
+
 }

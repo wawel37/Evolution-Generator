@@ -7,7 +7,9 @@ import javax.swing.*;
 import Math.Vector2d;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class VisualizatingPanel extends JPanel{
     public int PANEL_WIDTH = 900;
@@ -23,22 +25,20 @@ public class VisualizatingPanel extends JPanel{
         this.PANEL_WIDTH = this.widthRatio*this.engine.WIDTH;
         this.PANEL_HEIGHT = this.heightRatio*this.engine.HEIGHT;
 
-        System.out.println("pixel width: " + this.widthRatio + " " + this.PANEL_WIDTH);
-        System.out.println("pixel height: " + this.heightRatio + " " + this.PANEL_HEIGHT);
 
         setSize(this.PANEL_WIDTH,this.PANEL_HEIGHT);
         setPreferredSize(new Dimension(this.PANEL_WIDTH,this.PANEL_HEIGHT));
     }
 
-    @Override
-    protected void paintComponent(Graphics g){
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
 
-        this.drawSteppe(g);
-        this.drawJungle(g);
+    @Override
+    public void paint(Graphics g){
+        super.paintComponent(g);
+
+//        this.drawSteppe(g);
+//        this.drawJungle(g);
         this.drawGrasses(g);
-        this.drawAnimals(g);
+//        this.drawAnimals(g);
 
 
     }
@@ -54,17 +54,17 @@ public class VisualizatingPanel extends JPanel{
         int y = this.PANEL_HEIGHT-((this.engine.rightJungleVector.y+1)*this.heightRatio);
         int width = (this.engine.rightJungleVector.x-this.engine.leftJungleVector.x+1)*this.widthRatio;
         int height = (this.engine.rightJungleVector.y-this.engine.leftJungleVector.y+1)*this.heightRatio;
-        System.out.println(x);
-        System.out.println(y);
-        System.out.println(width);
-        System.out.println(height);
-        System.out.println(this.engine.leftJungleVector);
-        System.out.println(this.engine.rightJungleVector);
         g.fillRect(x, y, width, height);
     }
 
     private void drawGrasses(Graphics g){
         List<Vector2d> grassesPositions = this.engine.getGrassesPositions();
+//        List<Vector2d> grassesPositions = new LinkedList<Vector2d>();
+//        Random random = new Random();
+//        for(int i = 0; i < 200; i++){
+//            grassesPositions.add(new Vector2d(random.nextInt(800), random.nextInt(800)));
+//        }
+        System.out.println(grassesPositions.size());
         g.setColor(new Color(236,179,72));
         Iterator<Vector2d> iterator = grassesPositions.iterator();
         while(iterator.hasNext()){
@@ -77,12 +77,9 @@ public class VisualizatingPanel extends JPanel{
     private void drawAnimals(Graphics g){
         List<Vector2d> animalsPositions = this.engine.getAnimalsPositions();
         g.setColor(new Color(0, 0, 0));
-        System.out.println(this.engine);
-        System.out.println(animalsPositions);
         Iterator<Vector2d> iterator = animalsPositions.iterator();
         while(iterator.hasNext()){
             Vector2d myVector = iterator.next();
-            System.out.println(myVector);
             g.fillRect(myVector.x*this.widthRatio, this.PANEL_HEIGHT-((myVector.y+1)*this.heightRatio), this.widthRatio, this.heightRatio);
         }
     }
