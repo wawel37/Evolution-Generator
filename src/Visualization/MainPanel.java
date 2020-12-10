@@ -26,7 +26,7 @@ public class MainPanel extends JPanel implements ActionListener{
 
     private void initializeTimer(){
         this.timer = new Timer(100, this::actionPerformed);
-        this.timer.start();
+        this.timer.stop();
     }
 
 
@@ -42,6 +42,7 @@ public class MainPanel extends JPanel implements ActionListener{
     public void mainLoop(){
         if (this.engine.map.getAnimalCounter() == 0){
             this.timer.stop();
+            this.infoPanel.buttonPanel.endGame();
             return;
         }
         this.engine.run();
@@ -56,8 +57,22 @@ public class MainPanel extends JPanel implements ActionListener{
                                 double startEnergy,
                                 double moveEnergy,
                                 int initialAnimalCounter){
+        this.engine = new SimulationEngine(width, height, jungleRatio, plantEnergy, startEnergy, moveEnergy, initialAnimalCounter);
+        this.changePanelsEngine();
+    }
+
+    private void changePanelsEngine(){
+        if (this.visualizatingPanel == null){
+            this.visualizatingPanel = new VisualizatingPanel(this.engine);
+            add(this.visualizatingPanel);
+        }else{
+            this.visualizatingPanel.changeEngine(this.engine);
+        }
+        this.infoPanel.changeEngine(this.engine);
+        this.parent.pack();
 
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e){

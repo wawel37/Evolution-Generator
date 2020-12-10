@@ -12,7 +12,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
     private JButton start;
     private JButton stop;
     private JButton nextStep;
-    private boolean isStarted = true;
+    private boolean isStarted = false;
 
 
 
@@ -35,6 +35,10 @@ public class ButtonPanel extends JPanel implements ActionListener {
         add(this.stop);
         add(this.nextStep);
 
+    }
+
+    public void endGame(){
+        this.isStarted = false;
     }
 
     @Override

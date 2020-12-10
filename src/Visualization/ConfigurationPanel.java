@@ -27,6 +27,7 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
     private void initializeButton(){
         this.acceptConfig = new JButton("Accept Config");
         this.acceptConfig.setSize(new Dimension(30,30));
+        this.acceptConfig.addActionListener(this);
         add(this.acceptConfig);
     }
 
@@ -49,19 +50,19 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
         add(this.startAnimals);
 
         add(new JLabel("Starting energy amount", SwingConstants.CENTER));
-        this.startEnergy = new JSpinner(new SpinnerNumberModel(50,0,9999,1));
+        this.startEnergy = new JSpinner(new SpinnerNumberModel(50.0,0.0,9999.0,1.0));
         add(this.startEnergy);
 
         add(new JLabel("Move energy", SwingConstants.CENTER));
-        this.moveEnergy = new JSpinner(new SpinnerNumberModel(1,0,9999,1));
+        this.moveEnergy = new JSpinner(new SpinnerNumberModel(1.0,0.0,9999.0,1.0));
         add(this.moveEnergy);
 
         add(new JLabel("Energy gained from grass", SwingConstants.CENTER));
-        this.grassEnergy = new JSpinner(new SpinnerNumberModel(25,0,9999,1));
+        this.grassEnergy = new JSpinner(new SpinnerNumberModel(25.0,0.0,9999.0,1.0));
         add(this.grassEnergy);
 
         add(new JLabel("Jungle ratio", SwingConstants.CENTER));
-        this.jungleRatio = new JSpinner(new SpinnerNumberModel(0,0,1,0.1));
+        this.jungleRatio = new JSpinner(new SpinnerNumberModel(0.0,0.0,1.0,0.1));
         add(this.jungleRatio);
     }
 
@@ -70,12 +71,13 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
         Object source = e.getSource();
 
         if (source == this.acceptConfig){
+            System.out.println("siema");
             this.parent.setEngineValues((int)this.mapWidth.getValue(),
                     (int)this.mapHeight.getValue(),
-                    (double)this.jungleRatio.getValue(),
-                    (double)this.grassEnergy.getValue(),
-                    (double)this.startEnergy.getValue(),
-                    (double)this.moveEnergy.getValue(),
+                    (double) this.jungleRatio.getValue(),
+                    (double) this.grassEnergy.getValue(),
+                    (double) this.startEnergy.getValue(),
+                    (double) this.moveEnergy.getValue(),
                     (int)this.startAnimals.getValue());
         }
     }

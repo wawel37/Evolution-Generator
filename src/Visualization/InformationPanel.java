@@ -10,7 +10,7 @@ public class InformationPanel extends JPanel {
     static final int PANEL_WIDTH = 900;
     private SimulationEngine engine;
     private MainPanel parent;
-    private ButtonPanel buttonPanel;
+    public ButtonPanel buttonPanel;
     private ConfigurationPanel configPanel;
 
 
@@ -33,6 +33,11 @@ public class InformationPanel extends JPanel {
         this.addAllLabels();
         this.addConfigurationPanel();
         this.addButtonPanel();
+    }
+
+    public void changeEngine(SimulationEngine engine){
+        this.engine = engine;
+        this.updateValues();
     }
 
     private void addConfigurationPanel(){
