@@ -4,10 +4,8 @@ import MapElement.Animal;
 import MapElement.Grass;
 import Math.*;
 import Map.GameMap;
-import Visualization.Frame;
+import Visualization.MainPanel;
 
-import javax.swing.Timer;
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -70,9 +68,6 @@ public class SimulationEngine implements ISimulation {
         return result;
     }
 
-    public void startAppFrame(){
-       Frame frame =  new Frame(this);
-    }
 
     @Override
     public String toString(){

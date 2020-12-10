@@ -4,11 +4,18 @@ import Simulation.SimulationEngine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.Flow;
 
 public class InformationPanel extends JPanel {
-    private final int PANEL_WIDTH = 900;
-    private final int PANEL_HEIGHT = 900;
+    static final int PANEL_WIDTH = 900;
     private SimulationEngine engine;
+    private MainPanel parent;
+    private ButtonPanel buttonPanel;
+    private ConfigurationPanel configPanel;
+
+
+
+
     private final JLabel animalCounter = new JLabel();
     private final JLabel grassCounter = new JLabel();
     private final JLabel dominatingGenotype = new JLabel();
@@ -17,14 +24,25 @@ public class InformationPanel extends JPanel {
     private final JLabel averageDescandants = new JLabel();
 
 
-    public InformationPanel(SimulationEngine engine){
-        setSize(this.PANEL_WIDTH, this.PANEL_HEIGHT);
-        setPreferredSize(new Dimension(this.PANEL_WIDTH, 0));
-        setVisible(true);
+    public InformationPanel(SimulationEngine engine, MainPanel parent){
+        this.parent = parent;
+        setPreferredSize(new Dimension(PANEL_WIDTH, 0));
         this.engine = engine;
-        setLayout(new GridLayout(10, 1));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.addAllLabels();
+        this.addConfigurationPanel();
+        this.addButtonPanel();
+    }
+
+    private void addConfigurationPanel(){
+        this.configPanel = new ConfigurationPanel(this.parent);
+        add(this.configPanel);
+    }
+
+    private void addButtonPanel(){
+        this.buttonPanel = new ButtonPanel(this.parent);
+        add(this.buttonPanel);
     }
 
     private void addAllLabels(){
@@ -40,6 +58,12 @@ public class InformationPanel extends JPanel {
 
         this.averageEnergy.setText("Average energy: " + this.engine.map.getAverageEnergy());
         add(this.averageEnergy);
+
+        this.averageAge.setText("Average living spam: " + this.engine.map.getAverageAge());
+        add(this.averageAge);
+
+        this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
+        add(this.averageDescandants);
     }
 
     public void updateValues(){
@@ -47,6 +71,8 @@ public class InformationPanel extends JPanel {
         this.grassCounter.setText("Number of grasses: " + this.engine.map.getGrassCounter());
         this.dominatingGenotype.setText("Dominating genotype: " + this.engine.map.getDominatingGenotype());
         this.averageEnergy.setText("Average energy: " + this.engine.map.getAverageEnergy());
+        this.averageAge.setText("Average living spam: " + this.engine.map.getAverageAge());
+        this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
     }
 
 }
