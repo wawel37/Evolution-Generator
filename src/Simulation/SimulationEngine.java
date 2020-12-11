@@ -68,6 +68,9 @@ public class SimulationEngine implements ISimulation {
         return result;
     }
 
+    public double getStartEnergy(){
+        return this.startEnergy;
+    }
 
     @Override
     public String toString(){

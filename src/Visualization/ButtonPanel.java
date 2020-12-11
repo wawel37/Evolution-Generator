@@ -47,7 +47,6 @@ public class ButtonPanel extends JPanel implements ActionListener {
 
         if (source == this.start && !this.isStarted){
             this.parent.timer.start();
-            System.out.println("wystartowalismy");
             this.isStarted = true;
         }
 

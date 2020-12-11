@@ -13,6 +13,9 @@ public class MainPanel extends JPanel implements ActionListener{
     private InformationPanel infoPanel;
     private MainFrame parent;
     public Timer timer;
+    private long start = 0;
+    private long end = 0;
+
 
     public MainPanel(MainFrame parent){
         this.parent = parent;
@@ -26,14 +29,15 @@ public class MainPanel extends JPanel implements ActionListener{
     }
 
     private void initializeTimer(){
-        this.timer = new Timer(1000, this::actionPerformed);
+        this.timer = new Timer(10, this::actionPerformed);
         this.timer.stop();
+        this.timer.setDelay(1000);
     }
 
     public void changeTimerGap(int gap){
         this.timer.stop();
-        System.out.println("zmieniony gap na :" + gap);
         this.timer.setDelay(gap);
+        System.out.println("gap: " + gap);
     }
 
 
@@ -87,7 +91,10 @@ public class MainPanel extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e){
+        this.end = System.currentTimeMillis();
+        System.out.println(this.end - this.start);
         this.mainLoop();
+        this.start = System.currentTimeMillis();
     }
 
 

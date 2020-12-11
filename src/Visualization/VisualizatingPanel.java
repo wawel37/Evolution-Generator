@@ -1,4 +1,5 @@
 package Visualization;
+import MapElement.Animal;
 import Simulation.SimulationEngine;
 
 import java.awt.*;
@@ -73,11 +74,15 @@ public class VisualizatingPanel extends JPanel{
     }
 
     private void drawAnimals(Graphics g){
-        List<Vector2d> animalsPositions = this.engine.getAnimalsPositions();
-        g.setColor(new Color(0, 0, 0));
-        Iterator<Vector2d> iterator = animalsPositions.iterator();
+        List<Animal> animalsPositions = this.engine.map.getAnimalsAsList();
+        double startEnergy = this.engine.getStartEnergy();
+        Iterator<Animal> iterator = animalsPositions.iterator();
         while(iterator.hasNext()){
-            Vector2d myVector = iterator.next();
+            Animal myAnimal = iterator.next();
+            int myColor = (int)((myAnimal.getCurrentEnergy()/startEnergy)*255);
+            if (myColor > 255) myColor = 255;
+            g.setColor(new Color(myColor, 0, 0));
+            Vector2d myVector = myAnimal.getPosition();
             g.fillRect(myVector.x*this.widthRatio, this.PANEL_HEIGHT-((myVector.y+1)*this.heightRatio), this.widthRatio, this.heightRatio);
         }
     }
