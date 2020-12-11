@@ -19,16 +19,9 @@ public class VisualizatingPanel extends JPanel{
     private int heightRatio;
 
     public VisualizatingPanel(SimulationEngine engine){
-        this.engine = engine;
-        this.widthRatio = (int)Math.floor(this.PANEL_WIDTH/this.engine.WIDTH);
-        this.heightRatio = (int)Math.floor(this.PANEL_HEIGHT/this.engine.HEIGHT);
-        this.PANEL_WIDTH = this.widthRatio*this.engine.WIDTH;
-        this.PANEL_HEIGHT = this.heightRatio*this.engine.HEIGHT;
-        setPreferredSize(new Dimension(this.PANEL_WIDTH, this.PANEL_HEIGHT));
+        this.changeEngine(engine);
 
 
-
-        System.out.println(this.PANEL_HEIGHT + " " + this.PANEL_WIDTH);
     }
 
     public void changeEngine(SimulationEngine engine){
@@ -39,8 +32,7 @@ public class VisualizatingPanel extends JPanel{
         this.heightRatio = (int)Math.floor(this.PANEL_HEIGHT/this.engine.HEIGHT);
         this.PANEL_WIDTH = this.widthRatio*this.engine.WIDTH;
         this.PANEL_HEIGHT = this.heightRatio*this.engine.HEIGHT;
-        setPreferredSize(new Dimension(this.PANEL_WIDTH, this.PANEL_HEIGHT));
-        System.out.println(this.PANEL_HEIGHT);
+        setPreferredSize(new Dimension(900, 900));
     }
 
     @Override

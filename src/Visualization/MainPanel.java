@@ -26,8 +26,14 @@ public class MainPanel extends JPanel implements ActionListener{
     }
 
     private void initializeTimer(){
-        this.timer = new Timer(10, this::actionPerformed);
+        this.timer = new Timer(1000, this::actionPerformed);
         this.timer.stop();
+    }
+
+    public void changeTimerGap(int gap){
+        this.timer.stop();
+        System.out.println("zmieniony gap na :" + gap);
+        this.timer.setDelay(gap);
     }
 
 
@@ -73,8 +79,8 @@ public class MainPanel extends JPanel implements ActionListener{
             this.visualizatingPanel.changeEngine(this.engine);
         }
         this.infoPanel.changeEngine(this.engine);
-        this.setPreferredSize(new Dimension(this.visualizatingPanel.PANEL_WIDTH*2, this.visualizatingPanel.PANEL_HEIGHT));
-        this.parent.pack();
+//        this.setPreferredSize(new Dimension(this.visualizatingPanel.PANEL_WIDTH*2, 900));
+//        this.parent.pack();
 
     }
 
