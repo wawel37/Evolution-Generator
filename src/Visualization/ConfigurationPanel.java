@@ -26,13 +26,13 @@ public class ConfigurationPanel extends JPanel implements ActionListener {
 
     private void initializeButton(){
         this.acceptConfig = new JButton("Accept Config");
-        this.acceptConfig.setSize(new Dimension(30,30));
         this.acceptConfig.addActionListener(this);
         add(this.acceptConfig);
     }
 
     private void initializeWindow(){
-        this.setPreferredSize(new Dimension(300,300));
+        this.setSize(new Dimension(900, 400));
+        //this.setPreferredSize(new Dimension(300,300));
         setLayout(new GridLayout(8,2));
     }
 

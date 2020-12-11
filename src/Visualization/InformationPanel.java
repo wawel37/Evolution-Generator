@@ -26,7 +26,8 @@ public class InformationPanel extends JPanel {
 
     public InformationPanel(SimulationEngine engine, MainPanel parent){
         this.parent = parent;
-        setPreferredSize(new Dimension(PANEL_WIDTH, 0));
+        //setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+        setSize(new Dimension(PANEL_WIDTH, 450));
         this.engine = engine;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

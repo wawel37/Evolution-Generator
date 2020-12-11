@@ -21,8 +21,8 @@ public class MainFrame extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         add(new MainPanel(this));
-        setResizable(false);
-        setLocation(200,200);
+        setResizable(true);
+        setLocation(10,10);
         pack();
     }
 

@@ -19,13 +19,14 @@ public class MainPanel extends JPanel implements ActionListener{
         this.engine = new SimulationEngine(30, 30, 0.4, 20, 1000, 1, 30);
         this.infoPanel = new InformationPanel(this.engine, this);
         this.visualizatingPanel = new VisualizatingPanel(this.engine);
+        //this.infoPanel.setMinimumSize(new Dimension(InformationPanel.PANEL_WIDTH, 0));
 
         this.initializeTimer();
         this.initializeWindow();
     }
 
     private void initializeTimer(){
-        this.timer = new Timer(100, this::actionPerformed);
+        this.timer = new Timer(10, this::actionPerformed);
         this.timer.stop();
     }
 
@@ -58,7 +59,10 @@ public class MainPanel extends JPanel implements ActionListener{
                                 double moveEnergy,
                                 int initialAnimalCounter){
         this.engine = new SimulationEngine(width, height, jungleRatio, plantEnergy, startEnergy, moveEnergy, initialAnimalCounter);
+        this.timer.stop();
+        this.infoPanel.buttonPanel.endGame();
         this.changePanelsEngine();
+        this.mainLoop();
     }
 
     private void changePanelsEngine(){
@@ -69,6 +73,7 @@ public class MainPanel extends JPanel implements ActionListener{
             this.visualizatingPanel.changeEngine(this.engine);
         }
         this.infoPanel.changeEngine(this.engine);
+        this.setPreferredSize(new Dimension(this.visualizatingPanel.PANEL_WIDTH*2, this.visualizatingPanel.PANEL_HEIGHT));
         this.parent.pack();
 
     }
