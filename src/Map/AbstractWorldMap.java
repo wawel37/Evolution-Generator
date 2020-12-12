@@ -35,6 +35,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     //Helping stats
     protected int ageSum = 0;
     protected int deadAnimalCounter = 0;
+    protected int ageCounter = 0;
 
 
     public AbstractWorldMap(int width,
@@ -201,9 +202,11 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     /*
         Returns a list of strongest animals at the specific position
         REMEMBER TO CHECK IF THE POSITION IS OCCUPIED BY ANY ANIMAL
+        RETURNS A NULL IF THE POSITION IS NOT OCCUPIED
     */
     public List<Animal> getStrongestAnimalsAtPosition(Vector2d position){
         List<Animal> myAnimals = this.animals.get(position);
+        if (myAnimals == null) return null;
         Collections.sort(myAnimals, new AnimalComparatorByCurrentEnergy());
         List<Animal> strongestAnimalsAtPosition = new ArrayList<>();
         double maxEnergy = myAnimals.get(0).getCurrentEnergy();
@@ -459,7 +462,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         Iterator<Animal> iterator = myAnimals.iterator();
         int descendantsSum = 0;
         while(iterator.hasNext()){
-            descendantsSum += iterator.next().getDescendantCounter();
+            descendantsSum += iterator.next().getChildrenCounter();
         }
         if (this.animalCounter == 0){
             this.averageEnergy = 0;
@@ -508,6 +511,9 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     public double getAverageEnergy(){ return this.averageEnergy; }
     public double getAverageAge(){ return this.averageAge; }
     public double getAverageDescendants(){ return this.averageDescendants; }
+    public int getAgeCounter(){ return this.ageCounter; }
+
+    public void nextAge(){ this.ageCounter++; }
 
 
 }

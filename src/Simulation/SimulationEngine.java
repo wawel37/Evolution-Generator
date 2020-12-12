@@ -18,6 +18,7 @@ public class SimulationEngine implements ISimulation {
     public final double plantEnergy;
     public final double startEnergy;
     public final double moveEnergy;
+    public final int startAnimals;
     public final GameMap map;
     public final Vector2d leftJungleVector;
     public final Vector2d rightJungleVector;
@@ -29,12 +30,14 @@ public class SimulationEngine implements ISimulation {
                             double startEnergy,
                             double moveEnergy,
                             int initialAnimalCounter){
+        Animal.resetAnimalCounter();
         this.WIDTH = width;
         this.HEIGHT = height;
         this.jungleRatio = jungleRatio;
         this.plantEnergy = plantEnergy;
         this.startEnergy = startEnergy;
         this.moveEnergy = moveEnergy;
+        this.startAnimals = initialAnimalCounter;
         this.map = new GameMap(this.WIDTH, this.HEIGHT, this.jungleRatio, this.plantEnergy, this.startEnergy, this.moveEnergy);
         this.map.generateRandomAnimals(initialAnimalCounter);
         this.map.placeTwoGrasses();
@@ -48,6 +51,7 @@ public class SimulationEngine implements ISimulation {
         this.map.copulateAllAnimals();
         this.map.placeTwoGrasses();
         this.map.calculateStatistics();
+        this.map.nextAge();
     }
 
     public List<Vector2d> getAnimalsPositions(){
@@ -70,6 +74,10 @@ public class SimulationEngine implements ISimulation {
 
     public double getStartEnergy(){
         return this.startEnergy;
+    }
+
+    public SimulationEngine copy(){
+        return new SimulationEngine(this.WIDTH, this.HEIGHT, this.jungleRatio, this.plantEnergy, this.startEnergy, this.moveEnergy, this.startAnimals);
     }
 
     @Override

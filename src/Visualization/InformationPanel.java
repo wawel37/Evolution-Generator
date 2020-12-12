@@ -22,6 +22,7 @@ public class InformationPanel extends JPanel {
     private final JLabel averageEnergy = new JLabel();
     private final JLabel averageAge = new JLabel();
     private final JLabel averageDescandants = new JLabel();
+    private final JLabel ageCounter = new JLabel();
 
 
     public InformationPanel(SimulationEngine engine, MainPanel parent){
@@ -70,6 +71,9 @@ public class InformationPanel extends JPanel {
 
         this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
         add(this.averageDescandants);
+
+        this.ageCounter.setText("Age: " + this.engine.map.getAgeCounter());
+        add(this.ageCounter);
     }
 
     public void updateValues(){
@@ -79,6 +83,7 @@ public class InformationPanel extends JPanel {
         this.averageEnergy.setText("Average energy: " + this.engine.map.getAverageEnergy());
         this.averageAge.setText("Average living spam: " + this.engine.map.getAverageAge());
         this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
+        this.ageCounter.setText("Age: " + this.engine.map.getAgeCounter());
     }
 
 }

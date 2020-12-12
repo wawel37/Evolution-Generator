@@ -20,9 +20,11 @@ public class Animal extends AbstractMapElement{
     private IWorldMap map;
     private Orientation orientation;
     public final int id;
+    private boolean isDead = false;
 
     //Statistic variables
     private int age = 0;
+    private int childrenCounter = 0;
     private int descendantCounter = 0;
 
 
@@ -70,6 +72,7 @@ public class Animal extends AbstractMapElement{
     }
 
     public double copulating(){
+        this.childrenCounter++;
         this.descendantCounter++;
         double result = this.currentEnergy/4;
         this.currentEnergy -= result;
@@ -85,6 +88,7 @@ public class Animal extends AbstractMapElement{
         this.observer.deleteAnimal(this, this.getPosition());
         this.observer.calculateAverageAge(this.age);
         this.observer = null;
+        this.isDead = true;
     }
 
     @Override
@@ -109,7 +113,13 @@ public class Animal extends AbstractMapElement{
         return this.age;
     }
 
-    public int getDescendantCounter(){
-        return this.descendantCounter;
+    public int getChildrenCounter(){
+        return this.childrenCounter;
+    }
+    public boolean isDead(){ return this.isDead; }
+    public int getDescendantCounter() { return this.descendantCounter; }
+
+    public static void resetAnimalCounter(){
+        counter = 0;
     }
 }

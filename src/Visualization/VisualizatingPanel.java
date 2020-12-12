@@ -3,6 +3,10 @@ import MapElement.Animal;
 import Simulation.SimulationEngine;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.*;
 import javax.swing.*;
 import Math.Vector2d;
@@ -12,16 +16,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class VisualizatingPanel extends JPanel{
+public class VisualizatingPanel extends JPanel implements MouseListener{
     public int PANEL_WIDTH = 900;
     public int PANEL_HEIGHT = 900;
     public SimulationEngine engine;
+    private MainPanel parent;
     private int widthRatio;
     private int heightRatio;
 
-    public VisualizatingPanel(SimulationEngine engine){
+    public VisualizatingPanel(SimulationEngine engine, MainPanel parent){
+        this.parent = parent;
         this.changeEngine(engine);
-
+        this.addMouseListener(this);
 
     }
 
@@ -86,6 +92,40 @@ public class VisualizatingPanel extends JPanel{
             g.fillRect(myVector.x*this.widthRatio, this.PANEL_HEIGHT-((myVector.y+1)*this.heightRatio), this.widthRatio, this.heightRatio);
         }
     }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e){
+        int x = e.getX();
+        int y = e.getY();
+        List<Animal> strongestAnimal = this.engine.map.getStrongestAnimalsAtPosition(new Vector2d(x/this.widthRatio, (this.PANEL_HEIGHT - y)/this.heightRatio));
+        if (strongestAnimal != null && !this.parent.isTimerStarted()){
+            Animal myAnimal = strongestAnimal.get(0);
+            new AnimalInfoFrame(myAnimal, this.parent);
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e){
+        //PASS
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e){
+        //PASS
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e){
+        //PASS
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e){
+        //PASS
+    }
+
+
 
 
 }
