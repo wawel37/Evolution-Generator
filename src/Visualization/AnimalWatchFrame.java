@@ -13,7 +13,6 @@ public class AnimalWatchFrame extends JFrame implements WindowListener{
     private final Animal animal;
     private final MainPanel parent;
     private JLabel childrenCounter;
-    private JLabel descendantCounter;
     private JLabel ageCounter;
     private IAnimalWatchObserver observer;
 
@@ -29,9 +28,9 @@ public class AnimalWatchFrame extends JFrame implements WindowListener{
     private void initializeWindow(){
         this.addWindowListener(this);
         setVisible(true);
-        setLayout(new GridLayout(3, 1, 0, 0));
+        setLayout(new GridLayout(2, 1, 0, 0));
         setLocation(300,300);
-        setPreferredSize(new Dimension(300,200));
+        setPreferredSize(new Dimension(300,130));
         this.addComponents();
         pack();
     }
@@ -39,9 +38,6 @@ public class AnimalWatchFrame extends JFrame implements WindowListener{
     private void addComponents(){
         this.childrenCounter = new JLabel("Children counter: " + this.animal.getChildrenCounter(), SwingConstants.CENTER);
         add(this.childrenCounter);
-
-        this.descendantCounter = new JLabel("Descendants counter: " + this.animal.getDescendantCounter(), SwingConstants.CENTER);
-        add(this.descendantCounter);
 
         this.ageCounter = new JLabel("Age: " + this.animal.getAge(), SwingConstants.CENTER);
         add(this.ageCounter);
@@ -54,7 +50,6 @@ public class AnimalWatchFrame extends JFrame implements WindowListener{
             return;
         }
         this.childrenCounter.setText("Children counter: " + this.animal.getChildrenCounter());
-        this.descendantCounter.setText("Descendants counter: " + this.animal.getDescendantCounter());
         this.ageCounter.setText("Age: " + this.animal.getAge());
     }
 

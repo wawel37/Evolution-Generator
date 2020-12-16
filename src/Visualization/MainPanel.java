@@ -12,10 +12,8 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.sql.SQLOutput;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObserver{
@@ -35,7 +33,9 @@ public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObs
 
     public MainPanel(MainFrame parent){
         this.parent = parent;
-        this.engine = new SimulationEngine(10, 10, 0.7, 20, 1000, 1, 2);
+        if(!this.setEngineFromJSON()){
+            this.engine = new SimulationEngine(10, 10, 0.7, 20, 1000, 1, 2);
+        }
         this.infoPanel = new InformationPanel(this.engine, this);
         this.visualizatingPanel = new VisualizatingPanel(this.engine, this);
         this.framesObserved = new HashSet<>();
@@ -180,15 +180,51 @@ public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObs
 
     public void saveToFile(){
         if(this.infoPanel.buttonPanel.isStarted){ return; }
-        File file = FileSaving.selectFile();
+        File file = FileHandling.selectFile();
         if (file != null) {
-            FileSaving.appendToFile(file, this.engine.toString());
+            FileHandling.appendToFile(file, this.engine.toString());
             if (this.secondVisualization != null) {
-                FileSaving.appendToFile(file, this.secondEngine.toString());
+                FileHandling.appendToFile(file, this.secondEngine.toString());
             }
         }else{
             System.out.println("Choosing output file failed!");
         }
+    }
+
+    private boolean setEngineFromJSON(){
+        String temp;
+        int width, height, initialAnimalCounter;
+        double jungleRatio, plantEnergy, startEnergy, moveEnergy;
+        temp = FileHandling.getStringFromJSON("width");
+        if (temp == null) { return false; }
+        width = Integer.parseInt(temp);
+
+        temp = FileHandling.getStringFromJSON("height");
+        if (temp == null) { return false; }
+        height = Integer.parseInt(temp);
+
+        temp = FileHandling.getStringFromJSON("jungleRatio");
+        if (temp == null) { return false; }
+        jungleRatio = Double.parseDouble(temp);
+
+        temp = FileHandling.getStringFromJSON("plantEnergy");
+        if (temp == null) { return false; }
+        plantEnergy = Double.parseDouble(temp);
+
+        temp = FileHandling.getStringFromJSON("startEnergy");
+        if (temp == null) { return false; }
+        startEnergy = Double.parseDouble(temp);
+
+        temp = FileHandling.getStringFromJSON("moveEnergy");
+        if (temp == null) { return false; }
+        moveEnergy = Double.parseDouble(temp);
+
+        temp = FileHandling.getStringFromJSON("initialAnimalCounter");
+        if (temp == null) { return false; }
+        initialAnimalCounter = Integer.parseInt(temp);
+
+        this.engine = new SimulationEngine(width, height, jungleRatio, plantEnergy, startEnergy, moveEnergy, initialAnimalCounter);
+        return true;
     }
 
 

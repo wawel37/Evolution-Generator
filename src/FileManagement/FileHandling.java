@@ -1,12 +1,13 @@
 package FileManagement;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 
-public class FileSaving {
+import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+public class FileHandling {
 
     public static File selectFile(){
         JFileChooser fileChooser = new JFileChooser("/");
@@ -29,4 +30,19 @@ public class FileSaving {
             e.printStackTrace();
         }
     }
+
+    public static String getStringFromJSON(String field) {
+        JSONParser parser = new JSONParser();
+        try {
+            Reader reader = new FileReader("//home//mateusz//IdeaProjects//EvolutionGenerator//assets//JSONInputData.json");
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            if (jsonObject.get(field) == null) return null;
+            return String.valueOf(jsonObject.get(field));
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
