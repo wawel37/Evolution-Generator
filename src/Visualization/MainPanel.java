@@ -22,6 +22,7 @@ public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObs
     private AdditionalVisualization secondVisualization;
     private InformationPanel infoPanel;
     private MainFrame parent;
+    public boolean showDominatingGenotype;
     public Timer timer;
     private long start = 0;
     private long end = 0;
@@ -36,6 +37,7 @@ public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObs
         this.visualizatingPanel = new VisualizatingPanel(this.engine, this);
         this.framesObserved = new HashSet<>();
         //this.infoPanel.setMinimumSize(new Dimension(InformationPanel.PANEL_WIDTH, 0));
+        this.showDominatingGenotype = false;
 
         this.initializeTimer();
         this.initializeWindow();
@@ -72,8 +74,7 @@ public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObs
         this.engine.run();
         this.visualizatingPanel.repaint();
         if (this.secondVisualization != null){
-            this.secondEngine.run();
-            this.secondVisualization.repaint();
+            this.secondVisualization.mainLoop();
         }
         this.infoPanel.updateValues();
         this.updateFrames();
@@ -158,7 +159,21 @@ public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObs
         this.infoPanel.buttonPanel.resetCheckBox();
     }
 
+    public void showDominatingGenotype(){
+        this.showDominatingGenotype = true;
+        this.visualizatingPanel.repaint();
+        if(this.secondVisualization != null){
+            this.secondVisualization.repaint();
+        }
+    }
 
+    public void hideDominatingGenotype(){
+        this.showDominatingGenotype = false;
+        this.visualizatingPanel.repaint();
+        if(this.secondVisualization != null){
+            this.secondVisualization.repaint();
+        }
+    }
 
 
 

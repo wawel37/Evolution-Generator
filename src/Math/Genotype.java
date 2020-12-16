@@ -9,6 +9,7 @@ public class Genotype {
     public static final int NUMBER_OF_GENOTYPES = 8;
     public final int genes[] = new int[GENOTYPES_LENGTH];
     private final Random randomGenerator = new Random();
+    private int dominatingGenome;
 
     //Random genes
     public Genotype(){
@@ -16,6 +17,7 @@ public class Genotype {
             this.genes[i] = this.randomGenerator.nextInt(NUMBER_OF_GENOTYPES);
         }
         this.fixGenes();
+        this.setDominatingGenotype();
     }
 
     //Genes inherited from parents
@@ -32,6 +34,7 @@ public class Genotype {
             this.genes[i] = animal1.genotype.genes[i];
         }
         this.fixGenes();
+        this.setDominatingGenotype();
     }
 
     public int getRandomGene(){
@@ -81,6 +84,26 @@ public class Genotype {
             genesCounter[this.genes[i]]++;
         }
         return genesCounter;
+    }
+
+    public void setDominatingGenotype(){
+        int[] genesCounter = new int[NUMBER_OF_GENOTYPES];
+        for(int gene : this.genes){
+            genesCounter[gene]++;
+        }
+        int max = 0;
+        int maxidx = 0;
+        for(int i = 0; i < NUMBER_OF_GENOTYPES; i++){
+            if(genesCounter[i] > max){
+                max = genesCounter[i];
+                maxidx = i;
+            }
+        }
+        this.dominatingGenome = maxidx;
+    }
+
+    public int getDominatingGenotype(){
+        return this.dominatingGenome;
     }
 
     @Override

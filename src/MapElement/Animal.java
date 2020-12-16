@@ -91,6 +91,10 @@ public class Animal extends AbstractMapElement{
         this.isDead = true;
     }
 
+    public int getDominatingGenotype(){
+        return this.genotype.getDominatingGenotype();
+    }
+
     @Override
     public int hashCode(){
         return Objects.hash(this.id);

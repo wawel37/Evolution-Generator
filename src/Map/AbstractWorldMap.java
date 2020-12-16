@@ -472,7 +472,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     }
 
     private void calculateDominatingGenotype(){
-        Integer[] genotypeCounter = new Integer[8];
+        int[] genotypeCounter = new int[8];
         for (int i = 0; i < 8; i++){
             genotypeCounter[i] = 0;
         }
@@ -480,9 +480,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         Iterator<Animal> iterator = myAnimals.iterator();
         while(iterator.hasNext()){
             Animal myAnimal = iterator.next();
-            for(int i = 0; i < 32; i++){
-                genotypeCounter[myAnimal.genotype.genes[i]]++;
-            }
+            genotypeCounter[myAnimal.getDominatingGenotype()]++;
         }
         int largest = 0;
         int largestvalue = 0;

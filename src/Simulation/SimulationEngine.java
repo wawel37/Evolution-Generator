@@ -43,6 +43,7 @@ public class SimulationEngine implements ISimulation {
         this.map.placeTwoGrasses();
         this.leftJungleVector = this.map.getLeftLowerJungleVector();
         this.rightJungleVector = this.map.getRightUpperJungleVector();
+        this.map.calculateStatistics();
     }
 
     public void run(){

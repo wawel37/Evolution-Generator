@@ -12,6 +12,7 @@ public class InformationPanel extends JPanel {
     private MainPanel parent;
     public ButtonPanel buttonPanel;
     private ConfigurationPanel configPanel;
+    private StatisticPanel statPanel;
 
 
 
@@ -33,12 +34,14 @@ public class InformationPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.addAllLabels();
+        this.updateValues();
         this.addConfigurationPanel();
         this.addButtonPanel();
     }
 
     public void changeEngine(SimulationEngine engine){
         this.engine = engine;
+        this.statPanel.changeEngine(this.engine);
         this.updateValues();
     }
 
@@ -53,37 +56,39 @@ public class InformationPanel extends JPanel {
     }
 
     private void addAllLabels(){
-
-        this.animalCounter.setText("Number of animals: " + this.engine.map.getAnimalCounter());
-        add(this.animalCounter);
-
-        this.grassCounter.setText("Number of grasses: " + this.engine.map.getGrassCounter());
-        add(this.grassCounter);
-
-        this.dominatingGenotype.setText("Dominating genotype: " + this.engine.map.getDominatingGenotype());
-        add(this.dominatingGenotype);
-
-        this.averageEnergy.setText("Average energy: " + this.engine.map.getAverageEnergy());
-        add(this.averageEnergy);
-
-        this.averageAge.setText("Average living spam: " + this.engine.map.getAverageAge());
-        add(this.averageAge);
-
-        this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
-        add(this.averageDescandants);
-
-        this.ageCounter.setText("Age: " + this.engine.map.getAgeCounter());
-        add(this.ageCounter);
+        this.statPanel = new StatisticPanel(this.engine);
+        add(this.statPanel);
+//        this.animalCounter.setText("Number of animals: " + this.engine.map.getAnimalCounter());
+//        add(this.animalCounter);
+//
+//        this.grassCounter.setText("Number of grasses: " + this.engine.map.getGrassCounter());
+//        add(this.grassCounter);
+//
+//        this.dominatingGenotype.setText("Dominating genotype: " + this.engine.map.getDominatingGenotype());
+//        add(this.dominatingGenotype);
+//
+//        this.averageEnergy.setText("Average energy: " + this.engine.map.getAverageEnergy());
+//        add(this.averageEnergy);
+//
+//        this.averageAge.setText("Average living spam: " + this.engine.map.getAverageAge());
+//        add(this.averageAge);
+//
+//        this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
+//        add(this.averageDescandants);
+//
+//        this.ageCounter.setText("Age: " + this.engine.map.getAgeCounter());
+//        add(this.ageCounter);
     }
 
     public void updateValues(){
-        this.animalCounter.setText("Number of animals: " + this.engine.map.getAnimalCounter());
-        this.grassCounter.setText("Number of grasses: " + this.engine.map.getGrassCounter());
-        this.dominatingGenotype.setText("Dominating genotype: " + this.engine.map.getDominatingGenotype());
-        this.averageEnergy.setText("Average energy: " + this.engine.map.getAverageEnergy());
-        this.averageAge.setText("Average living spam: " + this.engine.map.getAverageAge());
-        this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
-        this.ageCounter.setText("Age: " + this.engine.map.getAgeCounter());
+        this.statPanel.updateValues();
+//        this.animalCounter.setText("Number of animals: " + this.engine.map.getAnimalCounter());
+//        this.grassCounter.setText("Number of grasses: " + this.engine.map.getGrassCounter());
+//        this.dominatingGenotype.setText("Dominating genotype: " + this.engine.map.getDominatingGenotype());
+//        this.averageEnergy.setText("Average energy: " + this.engine.map.getAverageEnergy());
+//        this.averageAge.setText("Average living spam: " + this.engine.map.getAverageAge());
+//        this.averageDescandants.setText("Average number of descandants: " + this.engine.map.getAverageDescendants());
+//        this.ageCounter.setText("Age: " + this.engine.map.getAgeCounter());
     }
 
 }

@@ -12,6 +12,12 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args){
+        /*
+        TODO
+
+            -Zliczanie  potomkow
+            -Naprawa dominujacego genomu
+         */
         test9();
     }
 

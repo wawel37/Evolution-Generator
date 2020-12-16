@@ -14,7 +14,8 @@ public class ButtonPanel extends JPanel implements ActionListener, ItemListener 
     private JButton start;
     private JButton stop;
     private JButton nextStep;
-    private JCheckBox checkBox;
+    private JCheckBox secondWindowCheckBox;
+    private JCheckBox dominatingGenotype;
     public boolean isStarted = false;
     private boolean isClicked = false;
 
@@ -32,15 +33,18 @@ public class ButtonPanel extends JPanel implements ActionListener, ItemListener 
         this.start = new JButton("Start");
         this.stop = new JButton("Stop");
         this.nextStep = new JButton("Next Step");
-        this.checkBox = new JCheckBox("Second Window", false);
+        this.secondWindowCheckBox = new JCheckBox("Second Window", false);
+        this.dominatingGenotype = new JCheckBox("Show dominating genotype", false);
         this.start.addActionListener(this);
         this.stop.addActionListener(this);
         this.nextStep.addActionListener(this);
-        this.checkBox.addItemListener(this);
-        add(this.checkBox);
+        this.secondWindowCheckBox.addItemListener(this);
+        this.dominatingGenotype.addItemListener(this);
+        add(this.secondWindowCheckBox);
         add(this.start);
         add(this.stop);
         add(this.nextStep);
+        add(this.dominatingGenotype);
 
     }
 
@@ -50,7 +54,7 @@ public class ButtonPanel extends JPanel implements ActionListener, ItemListener 
 
     public void resetCheckBox() {
         this.isClicked = false;
-        this.checkBox.setSelected(false);
+        this.secondWindowCheckBox.setSelected(false);
     }
 
     @Override
@@ -72,14 +76,20 @@ public class ButtonPanel extends JPanel implements ActionListener, ItemListener 
 
     @Override
     public void itemStateChanged(ItemEvent e){
-        System.out.println("seima");
-        if(e.getSource() == this.checkBox){
+        if(e.getSource() == this.secondWindowCheckBox){
             if(e.getStateChange() == 1){
                 this.isClicked = true;
                 this.parent.startSecondVisualization();
             }else if(this.isClicked){
                 this.isClicked = true;
                 this.parent.stopSecondVisualization();
+            }
+        }
+        else if(e.getSource() == this.dominatingGenotype){
+            if(e.getStateChange() == 1){
+                this.parent.showDominatingGenotype();
+            }else{
+                this.parent.hideDominatingGenotype();
             }
         }
     }

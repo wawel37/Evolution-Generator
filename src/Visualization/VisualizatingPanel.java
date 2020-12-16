@@ -85,9 +85,13 @@ public class VisualizatingPanel extends JPanel implements MouseListener{
         Iterator<Animal> iterator = animalsPositions.iterator();
         while(iterator.hasNext()){
             Animal myAnimal = iterator.next();
-            int myColor = (int)((myAnimal.getCurrentEnergy()/startEnergy)*255);
-            if (myColor > 255) myColor = 255;
-            g.setColor(new Color(myColor, 0, 0));
+            if(this.parent.showDominatingGenotype && myAnimal.getDominatingGenotype() == this.engine.map.getDominatingGenotype()) {
+                g.setColor(new Color(0, 255, 255));
+            }else {
+                int myColor = (int) ((myAnimal.getCurrentEnergy() / startEnergy) * 255);
+                if (myColor > 255) myColor = 255;
+                g.setColor(new Color(myColor, 0, 0));
+            }
             Vector2d myVector = myAnimal.getPosition();
             g.fillRect(myVector.x*this.widthRatio, this.PANEL_HEIGHT-((myVector.y+1)*this.heightRatio), this.widthRatio, this.heightRatio);
         }
