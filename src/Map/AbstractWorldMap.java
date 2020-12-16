@@ -405,26 +405,27 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     @Override
     public String toString(){
         String result = "";
-        for (Map.Entry<Vector2d, List<Animal>> entry : this.animals.entrySet()){
-            Iterator<Animal> iterator = entry.getValue().iterator();
-            result += ("Pozycje animalow na pozycji " + entry.getKey() + ":" + "\n");
-            while(iterator.hasNext()){
-                Animal myAnimal = iterator.next();
-                result += (myAnimal.getPosition() + " " + myAnimal.id + " ");
-                result +=("Energy: " + myAnimal.getCurrentEnergy() + "\n");
-            }
-        }
-
-        for (Map.Entry<Vector2d, Grass> entry : this.grasses.entrySet()){
-            result += ("Pozycje grassow na pozycji" + entry.getKey() + ":" + " ");
-            result += (entry.getValue().getPosition() + "\n");
-        }
-        result += "dominating genotype: " + this.dominatingGenotype + "\n";
-        result += "average Age: " + this.averageAge + "\n";
-        result += "average energy: " + this.averageEnergy + "\n";
-        result += "average descendants: " + this.averageDescendants + "\n";
-        result += "Animal counter: " + this.animalCounter + "\n";
-        result += "Grass counter: " + this.grassCounter + "\n";
+//        for (Map.Entry<Vector2d, List<Animal>> entry : this.animals.entrySet()){
+//            Iterator<Animal> iterator = entry.getValue().iterator();
+//            result += ("Pozycje animalow na pozycji " + entry.getKey() + ":" + "\n");
+//            while(iterator.hasNext()){
+//                Animal myAnimal = iterator.next();
+//                result += (myAnimal.getPosition() + " " + myAnimal.id + " ");
+//                result +=("Energy: " + myAnimal.getCurrentEnergy() + "\n");
+//            }
+//        }
+//
+//        for (Map.Entry<Vector2d, Grass> entry : this.grasses.entrySet()){
+//            result += ("Pozycje grassow na pozycji" + entry.getKey() + ":" + " ");
+//            result += (entry.getValue().getPosition() + "\n");
+//        }
+        result += "Number of Animals: " + this.animalCounter + "\n";
+        result += "Number of Grasses: " + this.grassCounter + "\n";
+        result += "Dominating genotype: " + this.dominatingGenotype + "\n";
+        result += "Average energy: " + this.averageEnergy + "\n";
+        result += "Average living spam: " + this.averageAge + "\n";
+        result += "Average number of children: " + this.averageDescendants + "\n";
+        result += "Age: " + this.ageCounter + "\n" + "\n";
 
         return result;
     }

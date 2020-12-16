@@ -1,0 +1,28 @@
+Number of Animals: 54
+Number of Grasses: 8
+Dominating genotype: 0
+Average energy: 43.44444444444444
+Average living spam: 0.0
+Average number of children: 0.14814814814814814
+Age: 3
+Number of Animals: 2
+Number of Grasses: 6
+Dominating genotype: 1
+Average energy: 998.0
+Average living spam: 0.0
+Average number of children: 0.0
+Age: 2
+Number of Animals: 2
+Number of Grasses: 2
+Dominating genotype: 0
+Average energy: 1000.0
+Average living spam: 0.0
+Average number of children: 0.0
+Age: 0
+Number of Animals: 2
+Number of Grasses: 2
+Dominating genotype: 3
+Average energy: 1000.0
+Average living spam: 0.0
+Average number of children: 0.0
+Age: 0

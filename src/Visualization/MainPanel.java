@@ -2,6 +2,7 @@ package Visualization;
 
 import MapElement.Animal;
 import Simulation.SimulationEngine;
+import FileManagement.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +11,8 @@ import java.awt.event.ActionListener;
 
 
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.sql.SQLOutput;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -172,6 +175,19 @@ public class MainPanel extends JPanel implements ActionListener, IAnimalWatchObs
         this.visualizatingPanel.repaint();
         if(this.secondVisualization != null){
             this.secondVisualization.repaint();
+        }
+    }
+
+    public void saveToFile(){
+        if(this.infoPanel.buttonPanel.isStarted){ return; }
+        File file = FileSaving.selectFile();
+        if (file != null) {
+            FileSaving.appendToFile(file, this.engine.toString());
+            if (this.secondVisualization != null) {
+                FileSaving.appendToFile(file, this.secondEngine.toString());
+            }
+        }else{
+            System.out.println("Choosing output file failed!");
         }
     }
 

@@ -14,6 +14,7 @@ public class ButtonPanel extends JPanel implements ActionListener, ItemListener 
     private JButton start;
     private JButton stop;
     private JButton nextStep;
+    private JButton saveToFile;
     private JCheckBox secondWindowCheckBox;
     private JCheckBox dominatingGenotype;
     public boolean isStarted = false;
@@ -35,15 +36,18 @@ public class ButtonPanel extends JPanel implements ActionListener, ItemListener 
         this.nextStep = new JButton("Next Step");
         this.secondWindowCheckBox = new JCheckBox("Second Window", false);
         this.dominatingGenotype = new JCheckBox("Show dominating genotype", false);
+        this.saveToFile = new JButton("Save to file");
         this.start.addActionListener(this);
         this.stop.addActionListener(this);
         this.nextStep.addActionListener(this);
         this.secondWindowCheckBox.addItemListener(this);
         this.dominatingGenotype.addItemListener(this);
+        this.saveToFile.addActionListener(this);
         add(this.secondWindowCheckBox);
         add(this.start);
         add(this.stop);
         add(this.nextStep);
+        add(this.saveToFile);
         add(this.dominatingGenotype);
 
     }
@@ -71,6 +75,9 @@ public class ButtonPanel extends JPanel implements ActionListener, ItemListener 
         }
         else if (source == this.nextStep && !this.isStarted){
             this.parent.mainLoop();
+        }
+        else if (source == this.saveToFile){
+            this.parent.saveToFile();
         }
     }
 
