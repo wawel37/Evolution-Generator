@@ -37,6 +37,8 @@ public class VisualizatingPanel extends JPanel implements MouseListener{
         this.PANEL_HEIGHT = 900;
         this.widthRatio = (int)Math.floor(this.PANEL_WIDTH/this.engine.WIDTH);
         this.heightRatio = (int)Math.floor(this.PANEL_HEIGHT/this.engine.HEIGHT);
+        this.widthRatio = Math.min(this.widthRatio, this.heightRatio);
+        this.heightRatio = Math.min(this.widthRatio, this.heightRatio);
         this.PANEL_WIDTH = this.widthRatio*this.engine.WIDTH;
         this.PANEL_HEIGHT = this.heightRatio*this.engine.HEIGHT;
         setPreferredSize(new Dimension(900, 900));
